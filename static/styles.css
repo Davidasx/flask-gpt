@@ -196,6 +196,38 @@ body {
     background-color: #c82333;
 }
 
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.modal-content #clear-button {
+    background-color: #dc3545;
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-content #clear-button:hover {
+    background-color: #c82333;
+}
+
 /* Position settings button in the top-left corner */
 .settings-button {
     position: absolute;

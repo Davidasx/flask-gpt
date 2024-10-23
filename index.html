@@ -22,7 +22,6 @@
         <div class="chat-input">
             <input type="text" id="message" placeholder="输入你的消息" onkeydown="checkEnter(event)" oninput="checkMessage()">
             <button id="send-button" onclick="sendMessage()">发送</button>
-            <button id="clear-button" onclick="clearMemory()">清空记忆</button>
         </div>
     </div>
 
@@ -30,12 +29,19 @@
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <h2>设置</h2>
-            <input type="text" id="base-url" placeholder="Base URL">
-            <input type="text" id="api-key" placeholder="API Key">
+            <div class="input-group">
+                <label for="base-url">Base URL:</label>
+                <input type="text" id="base-url" placeholder="Base URL">
+            </div>
+            <div class="input-group">
+                <label for="api-key">API Key:</label>
+                <input type="text" id="api-key" placeholder="API Key">
+            </div>
             <div class="button-container">
                 <button id="ok-config-button" onclick="updateConfig(); closeSettings();">确定</button>
                 <button id="cancel-config-button" onclick="closeSettings()">取消</button>
             </div>
+            <button id="clear-button" class="clear-button" onclick="clearMemory()">清空记忆</button>
         </div>
     </div>
 
@@ -55,6 +61,7 @@
         function formatMessage(message) {
             // 渲染分隔符
             message = message.replace(/^---$/gim, '<hr>');
+
             // 渲染标题
             message = message.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
             message = message.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
