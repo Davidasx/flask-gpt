@@ -5,8 +5,8 @@ import json
 
 app = Flask(__name__)
 messages = []
-api_key = os.environ.get("GITHUB_API_KEY", "")
-base_url = os.environ.get("API_BASE", "")
+api_key = ""
+base_url = ""
 
 class ChatBot:
     def __init__(self, api_key, base_url, model, nick):
@@ -45,8 +45,9 @@ def chat():
         nicks = ["ChatGPT-4o", "ChatGPT-4"]
         order = [0, 1]
         bots = []
+        print(base_url+"*"+api_key)
         for i in range(len(order)):
-            bots.append(ChatBot(api_key=api_key, base_url=base_url + "/v1/", model=models[order[i]], nick=nicks[order[i]]))
+            bots.append(ChatBot(api_key=api_key, base_url=base_url, model=models[order[i]], nick=nicks[order[i]]))
 
         def generate():
             bot_reply = ""
@@ -78,13 +79,16 @@ def clear():
     print("Memory Cleared")
     return jsonify({"status": "success", "message": "Memory Cleared"})
 
-@app.route('/config', methods=['POST'])
+@app.route('/config', methods=['POST', 'GET'])
 def config():
     global api_key, base_url
-    data = request.json
-    api_key = data.get('api_key', api_key)
-    base_url = data.get('base_url', base_url)
-    return jsonify({"status": "success", "message": "Configuration updated"})
+    if request.method == 'POST':
+        data = request.json
+        api_key = data.get('api_key', api_key)
+        base_url = data.get('base_url', base_url)
+        return jsonify({"status": "success", "message": "Configuration updated"})
+    elif request.method == 'GET':
+        return jsonify({"api_key": api_key, "base_url": base_url})
 
 if __name__ == '__main__':
     app.run(debug=True)

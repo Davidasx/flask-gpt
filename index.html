@@ -8,226 +8,7 @@
         href="https://www.freelogovectors.net/wp-content/uploads/2023/01/chatgpt-logo-freelogovectors.net_.png"
         type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .chat-container {
-            background-color: #fff;
-            width: 100%;
-            height: 100%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .chat-messages {
-            padding: 10px;
-            flex: 1;
-            overflow-y: auto;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .chat-input {
-            display: flex;
-            padding: 10px;
-            flex-wrap: wrap;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-
-        .chat-input button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .chat-input button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        .message {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .message.user {
-            justify-content: flex-end;
-        }
-
-        .message.bot {
-            justify-content: flex-start;
-        }
-
-        .message img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .message.user img {
-            margin-left: 10px;
-            margin-right: 0;
-        }
-
-        .message .bubble {
-            max-width: 70%;
-            padding: 10px;
-            border-radius: 10px;
-            background-color: #f1f1f1;
-            position: relative;
-            white-space: pre-wrap;
-            /* 保留换行符 */
-        }
-
-        .message.user .bubble {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        .message .bubble h1 {
-            font-size: 2em;
-            font-weight: bold;
-        }
-
-        .message .bubble h2 {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
-        .message .bubble h3 {
-            font-size: 1.17em;
-            font-weight: bold;
-        }
-
-        .message .bubble h4 {
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        .message .bubble h5 {
-            font-size: 0.83em;
-            font-weight: bold;
-        }
-
-        .message .bubble h6 {
-            font-size: 0.67em;
-            font-weight: bold;
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0, 0, 0);
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 8px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* New styles for buttons */
-        .modal-content button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .modal-content button:hover {
-            background-color: #0056b3;
-        }
-
-        .modal-content button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        .modal-content #cancel-config-button {
-            background-color: #dc3545;
-        }
-
-        .modal-content #cancel-config-button:hover {
-            background-color: #c82333;
-        }
-
-        /* Position settings button in the top-left corner */
-        .settings-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-        }
-
-        .settings-button i {
-            font-size: 24px;
-        }
-
-        .modal-content .button-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
@@ -255,16 +36,6 @@
                 <button id="ok-config-button" onclick="updateConfig(); closeSettings();">确定</button>
                 <button id="cancel-config-button" onclick="closeSettings()">取消</button>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    fetch('/config')
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('base-url').value = data.base_url || '';
-                            document.getElementById('api-key').value = data.api_key || '';
-                        });
-                });
-            </script>
         </div>
     </div>
 
@@ -407,6 +178,10 @@
             const baseURL = document.getElementById('base-url').value;
             const apiKey = document.getElementById('api-key').value;
 
+            // 保存到 cookies
+            document.cookie = `base_url=${baseURL}; path=/; max-age=31536000`; // 1 year
+            document.cookie = `api_key=${apiKey}; path=/; max-age=31536000`; // 1 year
+
             fetch('/config', {
                 method: 'POST',
                 headers: {
@@ -416,11 +191,17 @@
             }).then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        
+
                     } else {
                         alert('配置更新失败');
                     }
                 });
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
         function checkEnter(event) {
@@ -437,6 +218,11 @@
 
         function openSettings() {
             document.getElementById('settings-modal').style.display = "block";
+            // 获取当前配置并填充到文本框
+            const baseURL = getCookie('base_url');
+            const apiKey = getCookie('api_key');
+            document.getElementById('base-url').value = baseURL || '';
+            document.getElementById('api-key').value = apiKey || '';
         }
 
         function closeSettings() {
@@ -450,7 +236,7 @@
         });
 
         // Close the modal when clicking outside of it
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             const modal = document.getElementById('settings-modal');
             if (event.target == modal) {
                 modal.style.display = "none";
