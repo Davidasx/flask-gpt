@@ -29,6 +29,7 @@
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <h2>设置</h2>
+            <h2>API设置</h2>
             <div class="input-group">
                 <label for="base-url">Base URL:</label>
                 <input type="text" id="base-url" placeholder="Base URL">
@@ -37,11 +38,16 @@
                 <label for="api-key">API Key:</label>
                 <input type="text" id="api-key" placeholder="API Key">
             </div>
-            <div class="button-container">
+            <div class="button-container-end">
                 <button id="ok-config-button" onclick="updateConfig(); closeSettings();">确定</button>
                 <button id="cancel-config-button" onclick="closeSettings()">取消</button>
             </div>
-            <button id="clear-button" class="clear-button" onclick="clearMemory()">清空记忆</button>
+            <h2>聊天记录</h2>
+            <div class="button-container-start">
+                <button id="import-button" onclick="importMessages()">导入聊天记录</button>
+                <button id="export-button" onclick="exportMessages()">导出聊天记录</button>
+                <button id="clear-button" class="clear-button" onclick="clearMemory()">清空记忆</button>
+            </div>
         </div>
     </div>
 
@@ -59,6 +65,52 @@
         }
 
         function formatMessage(message) {
+            // 渲染代码块
+            message = message.replace(/```(\w+)?([\s\S]*?)```/gim, (match, p1, p2) => {
+                let codeContent = '';
+                let startIndex = 0;
+                while (p2[startIndex] == '\n') startIndex++;
+                for (let i = startIndex; i < p2.length; i++) {
+                    const char = p2[i];
+                    switch (char) {
+                        case '<':
+                            codeContent += '&lt;';
+                            break;
+                        case '>':
+                            codeContent += '&gt;';
+                            break;
+                        case '#':
+                            codeContent += '&#35;';
+                            break;
+                        default:
+                            codeContent += char;
+                    }
+                }
+                return `<pre style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 10px;"><code>${codeContent}</code></pre>`;
+            });
+
+            // 渲染行内代码
+            message = message.replace(/`([^`]+)`/gim, (match, p1) => {
+                let inlineCodeContent = '';
+                for (let i = 0; i < p1.length; i++) {
+                    const char = p1[i];
+                    switch (char) {
+                        case '<':
+                            inlineCodeContent += '&lt;';
+                            break;
+                        case '>':
+                            inlineCodeContent += '&gt;';
+                            break;
+                        case '#':
+                            inlineCodeContent += '&#35;';
+                            break;
+                        default:
+                            inlineCodeContent += char;
+                    }
+                }
+                return `<code style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 2px 4px;">${inlineCodeContent}</code>`;
+            });
+
             // 渲染分隔符
             message = message.replace(/^---$/gim, '<hr>');
 
@@ -67,15 +119,9 @@
             message = message.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
             message = message.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
             message = message.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-            message = message.replace(/^## (.*$)/gim, '<h2>$1</2>');
+            message = message.replace(/^## (.*$)/gim, '<h2>$1</h2>');
             message = message.replace(/^# (.*$)/gim, '<h1>$1</h1>');
             message = message.replace(/\n{2,}/g, '\n');
-
-            // 渲染代码块
-            message = message.replace(/```([^```]+)```/gim, '<pre><code>$1</code></pre>');
-
-            // 渲染行内代码
-            message = message.replace(/`([^`]+)`/gim, '<code>$1</code>');
 
             // 渲染粗体文本
             message = message.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
@@ -86,6 +132,7 @@
             // 合并连续的列表项为一个列表
             message = message.replace(/<\/ul>\s*<ul>/gim, '');
 
+            console.log(message)
             return message.trim();
         }
 
@@ -93,7 +140,7 @@
             const chatMessages = [];
             document.querySelectorAll('.message').forEach(message => {
                 chatMessages.push({
-                    type: message.classList.contains('user') ? 'user' : 'bot',
+                    role: message.classList.contains('user') ? 'user' : 'assistant',
                     content: message.querySelector('.bubble').innerHTML
                 });
             });
@@ -104,7 +151,7 @@
             const chatMessages = JSON.parse(localStorage.getItem('chatMessages'));
             if (chatMessages) {
                 chatMessages.forEach(msg => {
-                    if (msg.type === 'user') {
+                    if (msg.role === 'user') {
                         simulateUserMessage(msg.content);
                     } else {
                         simulateBotMessage(msg.content);
@@ -112,6 +159,24 @@
                 });
                 scrollToBottom();
             }
+            fetch('/import', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ chat_log: chatMessages })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log('Chat log imported successfully');
+                    } else {
+                        console.error('Error importing chat log:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
         function simulateUserMessage(content) {
@@ -132,8 +197,8 @@
 
             // Second step: render the MathJax content
             MathJax.typesetPromise([botMessage.querySelector('.bubble')]).then(() => {
-            // Scroll to bottom after rendering MathJax content
-            scrollToBottom();
+                // Scroll to bottom after rendering MathJax content
+                scrollToBottom();
             });
         }
 
@@ -297,6 +362,41 @@
             const modal = document.getElementById('settings-modal');
             if (event.target == modal) {
                 modal.style.display = "none";
+            }
+        }
+
+        function importMessages() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const messages = JSON.parse(e.target.result);
+                        localStorage.setItem('chatMessages', JSON.stringify(messages));
+                        document.getElementById('chat-messages').innerHTML = '';
+                        loadMessages();
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        function exportMessages() {
+            const messages = localStorage.getItem('chatMessages');
+            if (messages) {
+                const blob = new Blob([messages], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'chatMessages.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            } else {
+                alert('没有聊天记录可导出');
             }
         }
     </script>

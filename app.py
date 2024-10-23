@@ -90,5 +90,21 @@ def config():
     elif request.method == 'GET':
         return jsonify({"api_key": api_key, "base_url": base_url})
 
+@app.route('/import', methods=['POST'])
+def import_chat():
+    try:
+        messages.clear()
+        chat_log = request.json.get('chat_log')
+        if not chat_log:
+            return jsonify({"status": "error", "message": "No chat log provided"}), 400
+        for message in chat_log:
+            if 'role' in message and 'content' in message:
+                messages.append(message)
+            else:
+                return jsonify({"status": "error", "message": "Invalid chat log format"}), 400
+        
+        return jsonify({"status": "success", "message": "Chat log imported successfully"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 if __name__ == '__main__':
     app.run(debug=True)
