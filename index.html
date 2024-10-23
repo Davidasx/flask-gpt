@@ -53,6 +53,8 @@
         }
 
         function formatMessage(message) {
+            // 渲染分隔符
+            message = message.replace(/^---$/gim, '<hr>');
             // 渲染标题
             message = message.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
             message = message.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
