@@ -68,48 +68,48 @@
             original = message;
             // 渲染代码块
             message = message.replace(/```(\w+)?([\s\S]*?)```/gim, (match, p1, p2) => {
-            let codeContent = '';
-            let startIndex = 0;
-            while (p2[startIndex] == '\n') startIndex++;
-            for (let i = startIndex; i < p2.length; i++) {
-                const char = p2[i];
-                switch (char) {
-                case '<':
-                    codeContent += '&lt;';
-                    break;
-                case '>':
-                    codeContent += '&gt;';
-                    break;
-                case '#':
-                    codeContent += '&#35;';
-                    break;
-                default:
-                    codeContent += char;
+                let codeContent = '';
+                let startIndex = 0;
+                while (p2[startIndex] == '\n') startIndex++;
+                for (let i = startIndex; i < p2.length; i++) {
+                    const char = p2[i];
+                    switch (char) {
+                        case '<':
+                            codeContent += '&lt;';
+                            break;
+                        case '>':
+                            codeContent += '&gt;';
+                            break;
+                        case '#':
+                            codeContent += '&#35;';
+                            break;
+                        default:
+                            codeContent += char;
+                    }
                 }
-            }
-            return `<pre style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 10px;"><code>${codeContent}</code></pre>`;
+                return `<pre style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 10px;"><code>${codeContent}</code></pre>`;
             });
 
             // 渲染行内代码
             message = message.replace(/`([^`]+)`/gim, (match, p1) => {
-            let inlineCodeContent = '';
-            for (let i = 0; i < p1.length; i++) {
-                const char = p1[i];
-                switch (char) {
-                case '<':
-                    inlineCodeContent += '&lt;';
-                    break;
-                case '>':
-                    inlineCodeContent += '&gt;';
-                    break;
-                case '#':
-                    inlineCodeContent += '&#35;';
-                    break;
-                default:
-                    inlineCodeContent += char;
+                let inlineCodeContent = '';
+                for (let i = 0; i < p1.length; i++) {
+                    const char = p1[i];
+                    switch (char) {
+                        case '<':
+                            inlineCodeContent += '&lt;';
+                            break;
+                        case '>':
+                            inlineCodeContent += '&gt;';
+                            break;
+                        case '#':
+                            inlineCodeContent += '&#35;';
+                            break;
+                        default:
+                            inlineCodeContent += char;
+                    }
                 }
-            }
-            return `<code style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 2px 4px;">${inlineCodeContent}</code>`;
+                return `<code style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 2px 4px;">${inlineCodeContent}</code>`;
             });
 
             // 渲染分隔符
@@ -129,8 +129,8 @@
 
             // 渲染无序列表
             message = message.replace(/^\s*([-+*])\s+(.*)/gim, (match, p1, p2) => {
-            const indentLevel = match.match(/^\s*/)[0].length / 2;
-            return `<ul style="margin-left: ${indentLevel * 20}px;"><li>${p2}</li></ul>`;
+                const indentLevel = match.match(/^\s*/)[0].length / 2;
+                return `<ul style="margin-left: ${indentLevel * 20}px;"><li>${p2}</li></ul>`;
             });
 
             // 合并连续的列表项为一个列表
@@ -162,7 +162,7 @@
                         simulateBotMessage(msg.content);
                     }
                 });
-                
+
                 scrollToBottom();
             }
             fetch('/import', {
@@ -172,17 +172,17 @@
                 },
                 body: JSON.stringify({ chat_log: chatMessages })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Chat log imported successfully');
-                } else {
-                    console.error('Error importing chat log:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log('Chat log imported successfully');
+                    } else {
+                        console.error('Error importing chat log:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
         function simulateUserMessage(content) {
@@ -205,8 +205,8 @@
 
             // Second step: render the MathJax content
             MathJax.typesetPromise([botMessage.querySelector('.bubble')]).then(() => {
-            // Scroll to bottom after rendering MathJax content
-            scrollToBottom();
+                // Scroll to bottom after rendering MathJax content
+                scrollToBottom();
             });
         }
 
