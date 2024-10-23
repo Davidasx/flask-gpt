@@ -65,11 +65,12 @@
         }
 
         function formatMessage(message) {
+            original=message;
             // 渲染代码块
             message = message.replace(/```(\w+)?([\s\S]*?)```/gim, (match, p1, p2) => {
                 let codeContent = '';
                 let startIndex = 0;
-                while (p2[startIndex] == '\n') startIndex++;
+                while(p2[startIndex]=='\n') startIndex++;
                 for (let i = startIndex; i < p2.length; i++) {
                     const char = p2[i];
                     switch (char) {
@@ -131,9 +132,10 @@
 
             // 合并连续的列表项为一个列表
             message = message.replace(/<\/ul>\s*<ul>/gim, '');
-
-            console.log(message)
-            return message.trim();
+            
+            answer=message.trim();
+            message=original;
+            return answer;
         }
 
         function saveMessages() {
@@ -141,7 +143,7 @@
             document.querySelectorAll('.message').forEach(message => {
                 chatMessages.push({
                     role: message.classList.contains('user') ? 'user' : 'assistant',
-                    content: message.querySelector('.bubble').innerHTML
+                    content: message.getAttribute('data-content')
                 });
             });
             localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
@@ -157,6 +159,7 @@
                         simulateBotMessage(msg.content);
                     }
                 });
+                
                 scrollToBottom();
             }
             fetch('/import', {
@@ -166,29 +169,31 @@
                 },
                 body: JSON.stringify({ chat_log: chatMessages })
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        console.log('Chat log imported successfully');
-                    } else {
-                        console.error('Error importing chat log:', data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Chat log imported successfully');
+                } else {
+                    console.error('Error importing chat log:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
 
         function simulateUserMessage(content) {
             const userMessage = document.createElement('div');
             userMessage.className = 'message user';
-            userMessage.innerHTML = `<div class="bubble">${content}</div><img src="${userAvatar.src}" alt="User Avatar">`;
+            userMessage.setAttribute('data-content', content);
+            userMessage.innerHTML = `<div class="bubble">${formatMessage(content)}</div><img src="${userAvatar.src}" alt="User Avatar">`;
             document.getElementById('chat-messages').appendChild(userMessage);
         }
 
         function simulateBotMessage(content) {
             const botMessage = document.createElement('div');
             botMessage.className = 'message bot';
+            botMessage.setAttribute('data-content', content);
             botMessage.innerHTML = `<img src="${botAvatar.src}" alt="ChatGPT Logo"><div class="bubble"></div>`;
             document.getElementById('chat-messages').appendChild(botMessage);
 
@@ -197,8 +202,8 @@
 
             // Second step: render the MathJax content
             MathJax.typesetPromise([botMessage.querySelector('.bubble')]).then(() => {
-                // Scroll to bottom after rendering MathJax content
-                scrollToBottom();
+            // Scroll to bottom after rendering MathJax content
+            scrollToBottom();
             });
         }
 
@@ -216,6 +221,7 @@
                 // 显示用户消息
                 const userMessage = document.createElement('div');
                 userMessage.className = 'message user';
+                userMessage.setAttribute('data-content', message);
                 userMessage.innerHTML = `<div class="bubble">${formatMessage(message)}</div><img src="${userAvatar.src}" alt="User Avatar">`;
                 document.getElementById('chat-messages').appendChild(userMessage);
 
@@ -243,10 +249,12 @@
                     if (!botMessage) {
                         botMessage = document.createElement('div');
                         botMessage.className = 'message bot';
+                        botMessage.setAttribute('data-content', '');
                         botMessage.innerHTML = `<img src="${botAvatar.src}" alt="ChatGPT Logo"><div class="bubble"></div>`;
                         document.getElementById('chat-messages').appendChild(botMessage);
                     }
                     contentBuffer += data.content;
+                    botMessage.setAttribute('data-content', contentBuffer);
                     botMessage.querySelector('.bubble').innerHTML = formatMessage(contentBuffer);
 
                     // 滚动到底部
