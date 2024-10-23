@@ -66,26 +66,35 @@
 
         function formatMessage(message) {
             original = message;
+
+            // 计算三个点的数量
+            const dotCount = (message.match(/\.\.\./g) || []).length;
+
+            // 如果是奇数个，则在消息后加上换行和三个点
+            if (dotCount % 2 !== 0) {
+            message += '\n...';
+            }
+
             // 渲染代码块
             message = message.replace(/```(\w+)?([\s\S]*?)```/gim, (match, p1, p2) => {
             let codeContent = '';
             let startIndex = 0;
             while (p2[startIndex] == '\n') startIndex++;
             for (let i = startIndex; i < p2.length; i++) {
-            const char = p2[i];
-            switch (char) {
-            case '<':
-                codeContent += '&lt;';
-                break;
-            case '>':
-                codeContent += '&gt;';
-                break;
-            case '#':
-                codeContent += '&#35;';
-                break;
-            default:
-                codeContent += char;
-            }
+                const char = p2[i];
+                switch (char) {
+                case '<':
+                    codeContent += '&lt;';
+                    break;
+                case '>':
+                    codeContent += '&gt;';
+                    break;
+                case '#':
+                    codeContent += '&#35;';
+                    break;
+                default:
+                    codeContent += char;
+                }
             }
             return `<pre style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 10px;"><code>${codeContent}</code></pre>`;
             });
@@ -94,20 +103,20 @@
             message = message.replace(/`([^`]+)`/gim, (match, p1) => {
             let inlineCodeContent = '';
             for (let i = 0; i < p1.length; i++) {
-            const char = p1[i];
-            switch (char) {
-            case '<':
-                inlineCodeContent += '&lt;';
-                break;
-            case '>':
-                inlineCodeContent += '&gt;';
-                break;
-            case '#':
-                inlineCodeContent += '&#35;';
-                break;
-            default:
-                inlineCodeContent += char;
-            }
+                const char = p1[i];
+                switch (char) {
+                case '<':
+                    inlineCodeContent += '&lt;';
+                    break;
+                case '>':
+                    inlineCodeContent += '&gt;';
+                    break;
+                case '#':
+                    inlineCodeContent += '&#35;';
+                    break;
+                default:
+                    inlineCodeContent += char;
+                }
             }
             return `<code style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 2px 4px;">${inlineCodeContent}</code>`;
             });
@@ -135,28 +144,6 @@
 
             // 合并连续的列表项为一个列表
             message = message.replace(/<\/ul>\s*<ul/gim, '</ul><ul');
-
-            // 渲染单个未匹配的三个点
-            message = message.replace(/```([\s\S]*?)$/gim, (match, p1) => {
-            let codeContent = '';
-            for (let i = 0; i < p1.length; i++) {
-                const char = p1[i];
-                switch (char) {
-                case '<':
-                codeContent += '&lt;';
-                break;
-                case '>':
-                codeContent += '&gt;';
-                break;
-                case '#':
-                codeContent += '&#35;';
-                break;
-                default:
-                codeContent += char;
-                }
-            }
-            return `<pre style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 10px;"><code>${codeContent}</code></pre>`;
-            });
 
             answer = message.trim();
             message = original;
