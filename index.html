@@ -68,11 +68,11 @@
             original = message;
 
             // 计算三个点的数量
-            const dotCount = (message.match(/\.\.\./g) || []).length;
+            const dotCount = (message.match(/```/g) || []).length;
 
             // 如果是奇数个，则在消息后加上换行和三个点
             if (dotCount % 2 !== 0) {
-            message += '\n...';
+            message += '\n```';
             }
 
             // 渲染代码块
