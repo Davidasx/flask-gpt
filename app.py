@@ -1,0 +1,81 @@
+from flask import Flask, send_from_directory, request, jsonify, Response
+import os
+from openai import OpenAI
+import json
+
+app = Flask(__name__)
+messages = []
+
+class ChatBot:
+    def __init__(self, api_key, base_url, model, nick):
+        self.client = OpenAI(api_key=api_key, base_url=base_url)
+        self.model = model
+        self.nick = nick
+
+    def reply(self):
+        try:
+            completion = self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                stream=True  # 启用流式输出
+            )
+        except:
+            return None
+        return completion
+
+@app.route('/')
+def index():
+    return send_from_directory('.', 'index.html')
+
+@app.route('/chat', methods=['POST', 'GET'])
+def chat():
+    if request.method == 'POST':
+        user_message = request.json.get('message')
+        print("User: " + user_message)
+        messages.append({"role": "user", "content": user_message})
+        return jsonify({'status': 'Message received'})
+
+    elif request.method == 'GET':
+        api_key = os.environ["GITHUB_API_KEY"]
+        if "HTTP_PROXY" in os.environ:
+            os.environ["ALL_PROXY"] = os.environ["HTTPS_PROXY"]
+            os.environ["all_proxy"] = os.environ["https_proxy"]
+        models = ["gpt-4o", "gpt-4"]
+        nicks = ["ChatGPT-4o", "ChatGPT-4"]
+        order = [0, 1]
+        bots = []
+        for i in range(len(order)):
+            bots.append(ChatBot(api_key=api_key, base_url=os.environ["API_BASE"] + "/v1/", model=models[order[i]], nick=nicks[order[i]]))
+
+        def generate():
+            bot_reply = ""
+            print("Bot: ",end='')
+            while 1:
+                for bot in bots:
+                    completion = bot.reply()
+                    if completion is not None:
+                        for chunk in completion:
+                            if not chunk.choices:
+                                continue
+                            if chunk.choices[0].delta.content is None:
+                                break
+                            print(str(chunk.choices[0].delta.content),end='')
+                            bot_reply+=str(chunk.choices[0].delta.content)
+                            yield f"data: {json.dumps({'content': str(chunk.choices[0].delta.content), 'end': False})}\n\n"
+                        yield f"data: {json.dumps({'content': '', 'end': True})}\n\n"
+                        print("\n")
+                        break
+                if bot_reply != "":
+                    break
+            messages.append({"role": "assistant", "content": bot_reply})
+
+        return Response(generate(), content_type='text/event-stream')
+
+@app.route('/clear', methods=['POST'])
+def clear():
+    messages.clear()
+    print("Memory Cleared")
+    return jsonify({"status": "success", "message": "Memory Cleared"})
+
+if __name__ == '__main__':
+    app.run(debug=True)
