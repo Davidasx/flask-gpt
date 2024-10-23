@@ -67,7 +67,7 @@
             message = message.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
             message = message.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
             message = message.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-            message = message.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+            message = message.replace(/^## (.*$)/gim, '<h2>$1</2>');
             message = message.replace(/^# (.*$)/gim, '<h1>$1</h1>');
             message = message.replace(/\n{2,}/g, '\n');
 
@@ -87,6 +87,54 @@
             message = message.replace(/<\/ul>\s*<ul>/gim, '');
 
             return message.trim();
+        }
+
+        function saveMessages() {
+            const chatMessages = [];
+            document.querySelectorAll('.message').forEach(message => {
+                chatMessages.push({
+                    type: message.classList.contains('user') ? 'user' : 'bot',
+                    content: message.querySelector('.bubble').innerHTML
+                });
+            });
+            localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
+        }
+
+        function loadMessages() {
+            const chatMessages = JSON.parse(localStorage.getItem('chatMessages'));
+            if (chatMessages) {
+                chatMessages.forEach(msg => {
+                    if (msg.type === 'user') {
+                        simulateUserMessage(msg.content);
+                    } else {
+                        simulateBotMessage(msg.content);
+                    }
+                });
+                scrollToBottom();
+            }
+        }
+
+        function simulateUserMessage(content) {
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.innerHTML = `<div class="bubble">${content}</div><img src="${userAvatar.src}" alt="User Avatar">`;
+            document.getElementById('chat-messages').appendChild(userMessage);
+        }
+
+        function simulateBotMessage(content) {
+            const botMessage = document.createElement('div');
+            botMessage.className = 'message bot';
+            botMessage.innerHTML = `<img src="${botAvatar.src}" alt="ChatGPT Logo"><div class="bubble"></div>`;
+            document.getElementById('chat-messages').appendChild(botMessage);
+
+            // First step: render the message content
+            botMessage.querySelector('.bubble').innerHTML = formatMessage(content);
+
+            // Second step: render the MathJax content
+            MathJax.typesetPromise([botMessage.querySelector('.bubble')]).then(() => {
+            // Scroll to bottom after rendering MathJax content
+            scrollToBottom();
+            });
         }
 
         function sendMessage(message = null, showUserBubble = true) {
@@ -150,6 +198,7 @@
                         });
 
                         eventSource.close();
+                        saveMessages();
                     }
                 };
 
@@ -161,6 +210,7 @@
 
             // 检查消息输入框
             checkMessage();
+            saveMessages();
         }
 
         function clearMemory(confirmClear = true) {
@@ -176,9 +226,7 @@
                         // 清空屏幕上的消息
                         const chatMessages = document.getElementById('chat-messages');
                         chatMessages.innerHTML = '';
-
-                        // 发送一次回复
-                        //sendMessage("你好！", false);
+                        localStorage.removeItem('chatMessages');
                     }
                 });
         }
@@ -238,10 +286,10 @@
             document.getElementById('settings-modal').style.display = "none";
         }
 
-        // 初始化时禁用发送按钮并清空记忆
+        // 初始化时禁用发送按钮并加载消息记录
         document.addEventListener('DOMContentLoaded', () => {
             checkMessage();
-            clearMemory(false);
+            loadMessages();
         });
 
         // Close the modal when clicking outside of it
