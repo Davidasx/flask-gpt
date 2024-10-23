@@ -5,6 +5,8 @@ import json
 
 app = Flask(__name__)
 messages = []
+api_key = os.environ.get("GITHUB_API_KEY", "")
+base_url = os.environ.get("API_BASE", "")
 
 class ChatBot:
     def __init__(self, api_key, base_url, model, nick):
@@ -17,7 +19,7 @@ class ChatBot:
             completion = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
-                stream=True  # 启用流式输出
+                stream=True  # Enable streaming output
             )
         except:
             return None
@@ -36,7 +38,6 @@ def chat():
         return jsonify({'status': 'Message received'})
 
     elif request.method == 'GET':
-        api_key = os.environ["GITHUB_API_KEY"]
         if "HTTP_PROXY" in os.environ:
             os.environ["ALL_PROXY"] = os.environ["HTTPS_PROXY"]
             os.environ["all_proxy"] = os.environ["https_proxy"]
@@ -45,7 +46,7 @@ def chat():
         order = [0, 1]
         bots = []
         for i in range(len(order)):
-            bots.append(ChatBot(api_key=api_key, base_url=os.environ["API_BASE"] + "/v1/", model=models[order[i]], nick=nicks[order[i]]))
+            bots.append(ChatBot(api_key=api_key, base_url=base_url + "/v1/", model=models[order[i]], nick=nicks[order[i]]))
 
         def generate():
             bot_reply = ""
@@ -76,6 +77,14 @@ def clear():
     messages.clear()
     print("Memory Cleared")
     return jsonify({"status": "success", "message": "Memory Cleared"})
+
+@app.route('/config', methods=['POST'])
+def config():
+    global api_key, base_url
+    data = request.json
+    api_key = data.get('api_key', api_key)
+    base_url = data.get('base_url', base_url)
+    return jsonify({"status": "success", "message": "Configuration updated"})
 
 if __name__ == '__main__':
     app.run(debug=True)

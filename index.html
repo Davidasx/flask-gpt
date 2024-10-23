@@ -7,6 +7,7 @@
     <link rel="icon"
         href="https://www.freelogovectors.net/wp-content/uploads/2023/01/chatgpt-logo-freelogovectors.net_.png"
         type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,6 +29,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .chat-messages {
@@ -40,6 +42,7 @@
         .chat-input {
             display: flex;
             padding: 10px;
+            flex-wrap: wrap;
         }
 
         .chat-input input {
@@ -48,6 +51,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             margin-right: 10px;
+            margin-bottom: 10px;
         }
 
         .chat-input button {
@@ -57,6 +61,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            margin-bottom: 10px;
         }
 
         .chat-input button:disabled {
@@ -134,6 +139,94 @@
             font-size: 0.67em;
             font-weight: bold;
         }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* New styles for buttons */
+        .modal-content button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .modal-content button:hover {
+            background-color: #0056b3;
+        }
+
+        .modal-content button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .modal-content #cancel-config-button {
+            background-color: #dc3545;
+        }
+
+        .modal-content #cancel-config-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Position settings button in the top-left corner */
+        .settings-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .settings-button i {
+            font-size: 24px;
+        }
+
+        .modal-content .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
     </style>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -141,11 +234,37 @@
 
 <body>
     <div class="chat-container">
+        <button id="settings-button" class="settings-button" onclick="openSettings()">
+            <i class="fas fa-cog"></i>
+        </button>
         <div class="chat-messages" id="chat-messages"></div>
         <div class="chat-input">
             <input type="text" id="message" placeholder="输入你的消息" onkeydown="checkEnter(event)" oninput="checkMessage()">
             <button id="send-button" onclick="sendMessage()">发送</button>
             <button id="clear-button" onclick="clearMemory()">清空记忆</button>
+        </div>
+    </div>
+
+    <!-- Modal for settings -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <h2>设置</h2>
+            <input type="text" id="base-url" placeholder="Base URL">
+            <input type="text" id="api-key" placeholder="API Key">
+            <div class="button-container">
+                <button id="ok-config-button" onclick="updateConfig(); closeSettings();">确定</button>
+                <button id="cancel-config-button" onclick="closeSettings()">取消</button>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    fetch('/config')
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('base-url').value = data.base_url || '';
+                            document.getElementById('api-key').value = data.api_key || '';
+                        });
+                });
+            </script>
         </div>
     </div>
 
@@ -284,6 +403,26 @@
                 });
         }
 
+        function updateConfig() {
+            const baseURL = document.getElementById('base-url').value;
+            const apiKey = document.getElementById('api-key').value;
+
+            fetch('/config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ base_url: baseURL, api_key: apiKey })
+            }).then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        
+                    } else {
+                        alert('配置更新失败');
+                    }
+                });
+        }
+
         function checkEnter(event) {
             if (event.key === 'Enter') {
                 sendMessage();
@@ -296,11 +435,27 @@
             sendButton.disabled = message.trim() === '';
         }
 
+        function openSettings() {
+            document.getElementById('settings-modal').style.display = "block";
+        }
+
+        function closeSettings() {
+            document.getElementById('settings-modal').style.display = "none";
+        }
+
         // 初始化时禁用发送按钮并清空记忆
         document.addEventListener('DOMContentLoaded', () => {
             checkMessage();
             clearMemory(false);
         });
+
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('settings-modal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </body>
 
