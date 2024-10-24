@@ -61,6 +61,8 @@
         const botAvatar = new Image();
         botAvatar.src = "https://static.vecteezy.com/system/resources/previews/021/059/827/non_2x/chatgpt-logo-chat-gpt-icon-on-white-background-free-vector.jpg";
 
+        let isBotResponding = false;
+
         function scrollToBottom() {
             const chatMessages = document.getElementById('chat-messages');
             chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -212,6 +214,7 @@
             // 禁用发送按钮
             const sendButton = document.getElementById('send-button');
             sendButton.disabled = true;
+            isBotResponding = true;
 
             if (showUserBubble) {
                 // 显示用户消息
@@ -278,18 +281,21 @@
 
                         eventSource.close();
                         saveMessages();
-                        sendButton.disabled = false; // 重新启用发送按钮
+                        isBotResponding = false;
+                        checkMessage(); // 重新检查消息输入框
                     }
                 };
 
                 eventSource.onerror = function () {
                     console.error('Error occurred while receiving stream.');
                     eventSource.close();
-                    sendButton.disabled = false; // 重新启用发送按钮
+                    isBotResponding = false;
+                    checkMessage(); // 重新检查消息输入框
                 };
             }).catch(error => {
                 console.error('Fetch error:', error);
-                sendButton.disabled = false; // 重新启用发送按钮
+                isBotResponding = false;
+                checkMessage(); // 重新检查消息输入框
             });
 
             // 检查消息输入框
@@ -324,7 +330,7 @@
         }
 
         function checkEnter(event) {
-            if (event.key === 'Enter') {
+            if (event.key === 'Enter' && !isBotResponding) {
                 sendMessage();
             }
         }
@@ -332,7 +338,7 @@
         function checkMessage() {
             const message = document.getElementById('message').value;
             const sendButton = document.getElementById('send-button');
-            sendButton.disabled = message.trim() === '';
+            sendButton.disabled = message.trim() === '' || isBotResponding;
         }
 
         function openSettings() {
