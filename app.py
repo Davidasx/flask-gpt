@@ -32,10 +32,11 @@ def index():
 
 @app.route('/chat', methods=['POST', 'GET'])
 def chat():
+    user_id = request.args.get('user_id')
+    
     if request.method == 'POST':
         user_message = request.json.get('message')
         data = request.get_json()
-        user_id = data.get('user_id')
         api_key = data.get('api_key')
         base_url = data.get('base_url')
         chat_log_string = data.get('chat_log')
@@ -55,7 +56,6 @@ def chat():
         return jsonify({'status': 'Message received'})
 
     elif request.method == 'GET':
-        user_id = request.args.get('user_id')
         user_info = user_data[user_id]
         api_key = user_info['api_key']
         base_url = user_info['base_url']

@@ -241,12 +241,12 @@
             updatedChatLog.push({ role: 'user', content: message });
 
             const uuid = getOrCreateUUID();
-            fetch('/chat', {
+            fetch('/chat?user_id='+uuid, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ api_key: apiKey, base_url: baseUrl, chat_log: JSON.stringify(updatedChatLog), user_id: uuid })
+                body: JSON.stringify({ api_key: apiKey, base_url: baseUrl, chat_log: JSON.stringify(updatedChatLog) })
             }).then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
