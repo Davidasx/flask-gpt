@@ -391,6 +391,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const apiKeyInput = document.getElementById('api-key');
     const okButton = document.getElementById('ok-config-button');
 
+    // 读取并应用 API Key 和 Base URL
+    const baseURL = getCookie('base_url');
+    const apiKey = getCookie('api_key');
+    if (baseURL) {
+        baseURLInput.value = baseURL;
+    }
+    if (apiKey) {
+        apiKeyInput.value = apiKey;
+    }
+
+    // 设置初始值
     let initialBaseURL = baseURLInput.value;
     let initialApiKey = apiKeyInput.value;
 
