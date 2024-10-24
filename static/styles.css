@@ -283,3 +283,18 @@ body {
         margin: 5px 0;
     }
 }
+.modal .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal .close:hover,
+.modal .close:focus {
+    color: #555;
+    text-decoration: none;
+    cursor: pointer;
+}

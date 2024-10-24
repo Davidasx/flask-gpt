@@ -29,6 +29,7 @@
     <!-- Modal for settings -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
+            <span class="close" onclick="closeSettings()">&times;</span>
             <h2>设置</h2>
             <h2>API设置</h2>
             <div class="input-group">
@@ -367,6 +368,16 @@
         document.addEventListener('DOMContentLoaded', () => {
             checkMessage();
             loadMessages();
+
+            // 读取并应用API Key和Base URL
+            const baseURL = getCookie('base_url');
+            const apiKey = getCookie('api_key');
+            if (baseURL) {
+                document.getElementById('base-url').value = baseURL;
+            }
+            if (apiKey) {
+                document.getElementById('api-key').value = apiKey;
+            }
         });
 
         // Close the modal when clicking outside of it
