@@ -69,7 +69,7 @@ function formatMessage(message) {
         }
         return `<code style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 2px 4px;">${inlineCodeContent}</code>`;
     });
-    
+
     // 渲染链接
     message = message.replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2" target="_blank">$1</a>');
 
@@ -89,18 +89,17 @@ function formatMessage(message) {
 
     // 渲染无序列表
     message = message.replace(/^\s*([-+*])\s+(.*)/gim, (match, p1, p2) => {
-        const indentLevel = match.match(/^\s*/)[0].length / 2;
+        const indentLevel = Math.floor(match.match(/^\s*/)[0].length / 2);
         return `<ul style="margin-left: ${indentLevel * 20}px;"><li>${p2}</li></ul>`;
     });
 
     // 合并连续的列表项为一个列表
     message = message.replace(/<\/ul>\s*<ul/gim, '</ul><ul');
 
-
     // 删除标题行后的任意多个空行
     message = message.replace(/(<h[1-6]>.*<\/h[1-6]>)\s*\n+/gim, '$1');
 
-    //删除多余的空行
+    // 删除多余的空行
     message = message.replace(/\n{2,}/gim, '\n');
 
     console.log(message);
