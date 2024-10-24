@@ -73,53 +73,53 @@
 
             // 如果是奇数个，则在消息后加上换行和三个点
             if (dotCount % 2 !== 0) {
-            message += '\n```';
+                message += '\n```';
             }
 
             // 渲染代码块
             message = message.replace(/```(\w+)?([\s\S]*?)```/gim, (match, p1, p2) => {
-            let codeContent = '';
-            let startIndex = 0;
-            while (p2[startIndex] == '\n') startIndex++;
-            for (let i = startIndex; i < p2.length; i++) {
-                const char = p2[i];
-                switch (char) {
-                case '<':
-                    codeContent += '&lt;';
-                    break;
-                case '>':
-                    codeContent += '&gt;';
-                    break;
-                case '#':
-                    codeContent += '&#35;';
-                    break;
-                default:
-                    codeContent += char;
+                let codeContent = '';
+                let startIndex = 0;
+                while (p2[startIndex] == '\n') startIndex++;
+                for (let i = startIndex; i < p2.length; i++) {
+                    const char = p2[i];
+                    switch (char) {
+                        case '<':
+                            codeContent += '&lt;';
+                            break;
+                        case '>':
+                            codeContent += '&gt;';
+                            break;
+                        case '#':
+                            codeContent += '&#35;';
+                            break;
+                        default:
+                            codeContent += char;
+                    }
                 }
-            }
-            return `<pre style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 10px;"><code>${codeContent}</code></pre>`;
+                return `<pre style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 10px;"><code>${codeContent}</code></pre>`;
             });
 
             // 渲染行内代码
             message = message.replace(/`([^`]+)`/gim, (match, p1) => {
-            let inlineCodeContent = '';
-            for (let i = 0; i < p1.length; i++) {
-                const char = p1[i];
-                switch (char) {
-                case '<':
-                    inlineCodeContent += '&lt;';
-                    break;
-                case '>':
-                    inlineCodeContent += '&gt;';
-                    break;
-                case '#':
-                    inlineCodeContent += '&#35;';
-                    break;
-                default:
-                    inlineCodeContent += char;
+                let inlineCodeContent = '';
+                for (let i = 0; i < p1.length; i++) {
+                    const char = p1[i];
+                    switch (char) {
+                        case '<':
+                            inlineCodeContent += '&lt;';
+                            break;
+                        case '>':
+                            inlineCodeContent += '&gt;';
+                            break;
+                        case '#':
+                            inlineCodeContent += '&#35;';
+                            break;
+                        default:
+                            inlineCodeContent += char;
+                    }
                 }
-            }
-            return `<code style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 2px 4px;">${inlineCodeContent}</code>`;
+                return `<code style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 2px 4px;">${inlineCodeContent}</code>`;
             });
 
             // 渲染分隔符
@@ -128,7 +128,7 @@
             // 渲染标题
             message = message.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
             message = message.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
-            message = message.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
+            message = message.replace(/^#### (.*$)/gim, '<h4>$1</4>');
             message = message.replace(/^### (.*$)/gim, '<h3>$1</h3>');
             message = message.replace(/^## (.*$)/gim, '<h2>$1</h2>');
             message = message.replace(/^# (.*$)/gim, '<h1>$1</h1>');
@@ -139,8 +139,8 @@
 
             // 渲染无序列表
             message = message.replace(/^\s*([-+*])\s+(.*)/gim, (match, p1, p2) => {
-            const indentLevel = match.match(/^\s*/)[0].length / 2;
-            return `<ul style="margin-left: ${indentLevel * 20}px;"><li>${p2}</li></ul>`;
+                const indentLevel = match.match(/^\s*/)[0].length / 2;
+                return `<ul style="margin-left: ${indentLevel * 20}px;"><li>${p2}</li></ul>`;
             });
 
             // 合并连续的列表项为一个列表
@@ -175,24 +175,6 @@
 
                 scrollToBottom();
             }
-            fetch('/import', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ chat_log: chatMessages })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        console.log('Chat log imported successfully');
-                    } else {
-                        console.error('Error importing chat log:', data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
         }
 
         function simulateUserMessage(content) {
@@ -245,14 +227,24 @@
                 scrollToBottom();
             }
 
+            const apiKey = document.getElementById('api-key').value;
+            const baseUrl = document.getElementById('base-url').value;
+            const chatLog = localStorage.getItem('chatMessages');
+            const updatedChatLog = chatLog ? JSON.parse(chatLog) : [];
+            updatedChatLog.push({ role: 'user', content: message });
+
+            const uuid = getOrCreateUUID();
             fetch('/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message: message })
-            }).then(() => {
-                const eventSource = new EventSource('/chat');
+                body: JSON.stringify({ api_key: apiKey, base_url: baseUrl, chat_log: JSON.stringify(updatedChatLog), user_id: uuid })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const eventSource = new EventSource('/chat?user_id=' + uuid);
 
                 let botMessage = null;
                 let contentBuffer = '';
@@ -285,13 +277,18 @@
 
                         eventSource.close();
                         saveMessages();
+                        sendButton.disabled = false; // 重新启用发送按钮
                     }
                 };
 
                 eventSource.onerror = function () {
                     console.error('Error occurred while receiving stream.');
                     eventSource.close();
+                    sendButton.disabled = false; // 重新启用发送按钮
                 };
+            }).catch(error => {
+                console.error('Fetch error:', error);
+                sendButton.disabled = false; // 重新启用发送按钮
             });
 
             // 检查消息输入框
@@ -304,17 +301,10 @@
                 return;
             }
 
-            fetch('/clear', {
-                method: 'POST'
-            }).then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        // 清空屏幕上的消息
-                        const chatMessages = document.getElementById('chat-messages');
-                        chatMessages.innerHTML = '';
-                        localStorage.removeItem('chatMessages');
-                    }
-                });
+            // 清空屏幕上的消息
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML = '';
+            localStorage.removeItem('chatMessages');
         }
 
         function updateConfig() {
@@ -324,21 +314,6 @@
             // 保存到 cookies
             document.cookie = `base_url=${baseURL}; path=/; max-age=31536000`; // 1 year
             document.cookie = `api_key=${apiKey}; path=/; max-age=31536000`; // 1 year
-
-            fetch('/config', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ base_url: baseURL, api_key: apiKey })
-            }).then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-
-                    } else {
-                        alert('配置更新失败');
-                    }
-                });
         }
 
         function getCookie(name) {
@@ -370,6 +345,22 @@
 
         function closeSettings() {
             document.getElementById('settings-modal').style.display = "none";
+        }
+
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function getOrCreateUUID() {
+            let uuid = getCookie('uuid');
+            if (!uuid) {
+                uuid = generateUUID();
+                document.cookie = `uuid=${uuid}; path=/; max-age=31536000`; // 1 year
+            }
+            return uuid;
         }
 
         // 初始化时禁用发送按钮并加载消息记录
