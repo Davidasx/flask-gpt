@@ -385,3 +385,38 @@ function exportMessages() {
         alert('没有聊天记录可导出');
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const baseURLInput = document.getElementById('base-url');
+    const apiKeyInput = document.getElementById('api-key');
+    const okButton = document.getElementById('ok-config-button');
+
+    let initialBaseURL = baseURLInput.value;
+    let initialApiKey = apiKeyInput.value;
+
+    function checkForChanges() {
+        if (baseURLInput.value === initialBaseURL && apiKeyInput.value === initialApiKey) {
+            okButton.disabled = true;
+        } else {
+            okButton.disabled = false;
+        }
+    }
+
+    baseURLInput.addEventListener('input', checkForChanges);
+    apiKeyInput.addEventListener('input', checkForChanges);
+
+    // 初始化按钮状态
+    checkForChanges();
+
+    okButton.addEventListener('click', function () {
+        // 保存配置
+        updateConfig();
+
+        // 更新初始值
+        initialBaseURL = baseURLInput.value;
+        initialApiKey = apiKeyInput.value;
+
+        // 禁用按钮
+        okButton.disabled = true;
+    });
+});
