@@ -44,6 +44,7 @@ function formatMessage(message) {
                     codeContent += char;
             }
         }
+        codeContent = codeContent.replace(/\s+$/g, '');
         return `<pre style="border: 1px solid #ccc; background-color: #f9f9f9; padding: 10px;"><code>${codeContent}</code></pre>`;
     });
 
