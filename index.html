@@ -375,19 +375,21 @@
 
         // 初始化时禁用发送按钮并加载消息记录
         document.addEventListener('DOMContentLoaded', () => {
-            checkMessage();
-            loadMessages();
+            setTimeout(() => {
+                checkMessage();
+                loadMessages();
 
-            // 读取并应用API Key和Base URL
-            const baseURL = getCookie('base_url');
-            const apiKey = getCookie('api_key');
-            if (baseURL) {
-                document.getElementById('base-url').value = baseURL;
-            }
-            if (apiKey) {
-                document.getElementById('api-key').value = apiKey;
-            }
-            scrollToBottom();
+                // 读取并应用API Key和Base URL
+                const baseURL = getCookie('base_url');
+                const apiKey = getCookie('api_key');
+                if (baseURL) {
+                    document.getElementById('base-url').value = baseURL;
+                }
+                if (apiKey) {
+                    document.getElementById('api-key').value = apiKey;
+                }
+                scrollToBottom();
+            }, 2000); // 延迟2000毫秒
         });
 
         // Close the modal when clicking outside of it
