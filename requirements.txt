@@ -1,0 +1,4 @@
+openai>=1.0.0
+flask
+flask_sqlalchemy
+duckduckgo-search

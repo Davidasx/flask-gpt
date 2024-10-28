@@ -1,0 +1,16 @@
+{
+    "version": "3.2.1",
+    "input": "Enter your message",
+    "send": "Send",
+    "settings": "Settings",
+    "api-settings": "API Settings",
+    "history": "Chat History",
+    "sync": "Sync",
+    "clear": "Clear Memory",
+    "save": "Save",
+    "language": "Language",
+    "invalid-uuid": "Please enter a valid UUID",
+    "unknown-error": "Unknown Error",
+    "uuid-not-found": "UUID does not exist",
+    "memory-clear": "Are you sure you want to clear the memory?"
+}
