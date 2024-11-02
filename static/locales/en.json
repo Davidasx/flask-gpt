@@ -1,5 +1,5 @@
 {
-    "version": "3.2.1",
+    "version": "3.2.4",
     "input": "Enter your message",
     "send": "Send",
     "settings": "Settings",
@@ -12,5 +12,6 @@
     "invalid-uuid": "Please enter a valid UUID",
     "unknown-error": "Unknown Error",
     "uuid-not-found": "UUID does not exist",
-    "memory-clear": "Are you sure you want to clear the memory?"
+    "memory-clear": "Are you sure you want to clear the memory?",
+    "model": "Model"
 }

@@ -5,9 +5,17 @@
 
 ## Update Log (only after 3.1.0):
 
+### 3.2.4
+
+#### [![](https://img.shields.io/badge/Dev-20241102-blue)](https://github.com/Davidasx/flask-gpt/)
+
+New feature: change models manually.
+
+Made settings model stay exactly in the middle.
+
 ### 3.2.3
 
-#### [![](https://img.shields.io/badge/Dev/Main-20241028-purple)](https://github.com/Davidasx/flask-gpt/)
+#### [![](https://img.shields.io/badge/Dev/Main-20241028-purple)](https://github.com/Davidasx/flask-gpt/tree/c0bea4f259e671a56d1918afe8a93daf7a2aa3f9)
 
 Merged with main branch. Tested OK.
 

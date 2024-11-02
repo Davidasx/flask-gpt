@@ -1,9 +1,9 @@
 // Preload avatars
 const userAvatar = new Image();
-userAvatar.src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/User_font_awesome.svg";
+userAvatar.src = "static/images/user.svg";
 
 const botAvatar = new Image();
-botAvatar.src = "https://static.vecteezy.com/system/resources/previews/021/059/827/non_2x/chatgpt-logo-chat-gpt-icon-on-white-background-free-vector.jpg";
+botAvatar.src = "static/images/bot.jpg";
 
 let isBotResponding = false;
 

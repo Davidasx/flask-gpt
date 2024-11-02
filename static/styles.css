@@ -144,8 +144,9 @@ body {
     display: none;
     position: fixed;
     z-index: 1;
-    left: 0;
-    top: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -164,7 +165,7 @@ body {
     /*margin: 5% auto;*/
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 100%;
     max-width: 500px;
     border-radius: 8px;
 }

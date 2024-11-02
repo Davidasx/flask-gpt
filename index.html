@@ -31,8 +31,8 @@
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeSettings()">&times;</span>
-            <h2 data-i18n="settings">Settings</h2>
-            <h3 data-i18n="api-settings">API Settings</h3>
+            <h3 data-i18n="settings">Settings</h3>
+            <h4 data-i18n="api-settings">API Settings</h4>
             <div class="input-group">
                 <label for="base-url" data-i18n="base-url">Base URL:</label>
                 <input type="text" id="base-url" placeholder="Base URL">
@@ -44,7 +44,20 @@
             <div class="button-container-end">
                 <button id="ok-config-button" onclick="updateConfig();" data-i18n="save">Save</button>
             </div>
-            <h3 data-i18n="history">Chat History</h3>
+            <div class="input-group">
+                <label for="model-select" data-i18n="model">Model</label>
+                <select id="model-select" onchange="setModel(this.value)">
+                    <option value="gpt-4o-stream">4o with stream</option>
+                    <option value="gpt-4o">4o</option>
+                    <option value="gpt-4o-mini-stream">4o mini with stream</option>
+                    <option value="gpt-4o-mini">4o mini</option>
+                    <option value="o1-mini">o1 mini</option>
+                    <option value="o1-mini-stream">o1 mini with stream</option>
+                    <option value="o1-preview">o1 preview</option>
+                    <option value="o1-preview-stream">o1 preview with stream</option>
+                </select>
+            </div>
+            <h4 data-i18n="history">Chat History</h4>
             <div class="input-group">
                 <input type="text" id="uuid" placeholder="UUID">
             </div>
@@ -68,6 +81,7 @@
     <script src="static/message.js"></script>
     <script src="static/scripts.js"></script>
     <script src="static/i18n.js"></script>
+    <script src="static/model.js"></script>
 </body>
 
 </html>

@@ -44,17 +44,18 @@ def load_all_prompts(directory):
 load_all_prompts('prompts')
 
 class ChatBot:
-    def __init__(self, api_key, base_url, model, messages):
+    def __init__(self, api_key, base_url, model, messages, stream):
         self.client = OpenAI(api_key=api_key, base_url=base_url)
         self.model = model
         self.messages = messages
+        self.stream = stream
 
     def reply(self):
         try:
             completion = self.client.chat.completions.create(
                 model=self.model,
                 messages=self.messages,
-                stream=True  # Enable streaming output
+                stream=self.stream
             )
         except:
             return None
@@ -71,7 +72,11 @@ def chat():
     base_url = request.args.get('base_url')
     hidden = request.args.get('hidden', 'false').lower() == 'true'
     time_param = request.args.get('time')
-    
+    model = request.args.get('model')
+    stream = False
+    if len(model) > 7 and model[-7:]=="-stream":
+        model=model[:-7]
+        stream = True
     if request.method == 'POST':
         data = request.get_json()
         message = data.get('message')
@@ -106,7 +111,6 @@ def chat():
             os.environ["ALL_PROXY"] = os.environ["HTTPS_PROXY"]
             os.environ["all_proxy"] = os.environ["https_proxy"]
         
-        model = "gpt-4o"
         order = [0, 1]
         if time_param:
             timedate=f"{time_param[:4]}-{time_param[4:6]}-{time_param[6:8]} {time_param[8:10]}:{time_param[10:12]}"
@@ -118,7 +122,7 @@ datetime. Note that as the time can change, always use the time in \
 this message as the current time. Do not use the time from any other \
 messages because they can be outdated."}
         full_log = pre_prompt + [timeprompt] + chat_log
-        bot = ChatBot(api_key=api_key, base_url=base_url, model=model, messages=full_log)
+        bot = ChatBot(stream=stream, api_key=api_key, base_url=base_url, model=model, messages=full_log)
         if hidden:
             original_chat_log = chat_log[:-1]
             save_chat_log(user_id, original_chat_log)
@@ -126,14 +130,17 @@ messages because they can be outdated."}
         if completion is None:
             return jsonify({'status': 'error', 'message': 'Bot response error'}), 404
         def generate():
-            for chunk in completion:
-                if not chunk.choices:
-                    continue
-                if chunk.choices[0].delta.content is None:
-                    break
-                yield f"data: {json.dumps({'content': str(chunk.choices[0].delta.content), 'end': False})}\n\n"
-            yield f"data: {json.dumps({'content': '', 'end': True})}\n\n"
-
+            if stream:
+                for chunk in completion:
+                    if not chunk.choices:
+                        continue
+                    if chunk.choices[0].delta.content is None:
+                        break
+                    yield f"data: {json.dumps({'content': str(chunk.choices[0].delta.content), 'end': False})}\n\n"
+                yield f"data: {json.dumps({'content': '', 'end': True})}\n\n"
+            else:
+                yield f"data: {json.dumps({'content': str(completion.choices[0].message.content), 'end': False})}\n\n"
+                yield f"data: {json.dumps({'content': '', 'end': True})}\n\n"
         return Response(generate(), content_type='text/event-stream')
 
 @app.route('/clear_memory', methods=['POST'])

@@ -30,6 +30,7 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
     const baseUrl = document.getElementById('base-url').value;
     const chatLog = localStorage.getItem('chatMessages');
     const updatedChatLog = chatLog ? JSON.parse(chatLog) : [];
+    const model = localStorage.getItem('model') || 'gpt-4o'
     updatedChatLog.push({ role: 'user', content: message });
 
     const uuid = getOrCreateUUID();
@@ -43,7 +44,7 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const userTime = `${year}${month}${day}${hours}${minutes}`;
     
-    let url = `/chat?user_id=${uuid}&api_key=${apiKey}&base_url=${baseUrl}&time=${userTime}`;
+    let url = `/chat?user_id=${uuid}&api_key=${apiKey}&base_url=${baseUrl}&time=${userTime}&model=${model}`;
     if (hidden) {
         url += '&hidden=true';
     }
