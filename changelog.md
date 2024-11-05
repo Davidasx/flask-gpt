@@ -1,13 +1,21 @@
 ## Current Version:
 
-[![](https://img.shields.io/badge/Dev-3.2.3-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+[![](https://img.shields.io/badge/Dev-3.2.4.1-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
 [![](https://img.shields.io/badge/Main-3.2.3-red)](https://github.com/Davidasx/flask-gpt/tree/main)
 
 ## Update Log (only after 3.1.0):
 
+### 3.2.4.1
+
+#### [![](https://img.shields.io/badge/Dev-20241105-blue)](https://github.com/Davidasx/flask-gpt/)
+
+New feature: manage system prompts flexibly.
+
+TODO: [#001](TODO/001.md) Manage system prompts in the frontend, not the backend.
+
 ### 3.2.4
 
-#### [![](https://img.shields.io/badge/Dev-20241102-blue)](https://github.com/Davidasx/flask-gpt/)
+#### [![](https://img.shields.io/badge/Dev-20241102-blue)](https://github.com/Davidasx/flask-gpt/tree/a6f11c738fd8468b6566210c1747b7aad5507b44)
 
 New feature: change models manually.
 

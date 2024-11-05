@@ -6,7 +6,7 @@ Fill in your own API to use.
 
 ## Installation
 
-See [install.md](install.md) for installation instructions.
+See [installation.md](installation.md) for installation instructions.
 
 ## Implementation
 

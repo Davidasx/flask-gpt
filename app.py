@@ -29,6 +29,8 @@ init_db(app)
 pre_prompt = []
 
 def load_prompt(file_path):
+    if file_path[0]=='#':
+        return
     global pre_prompt
     with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
@@ -36,10 +38,21 @@ def load_prompt(file_path):
         pre_prompt.append({"role": "system", "content": content})
 
 def load_all_prompts(directory):
-    for filename in os.listdir(directory):
-        filepath = os.path.join(directory, filename)
-        if os.path.isfile(filepath):
-            load_prompt(filepath)
+    print("Loading prompts...")
+    prompts_file = os.path.join(directory, 'prompts.json')
+    print(prompts_file)
+    if not os.path.isfile(prompts_file):
+        return
+
+    with open(prompts_file, 'r', encoding='utf-8') as file:
+        prompts_data = json.load(file)
+
+    for prompt in prompts_data.get('prompts', []):
+        if prompt.get('enabled', False):
+            print("Loaded prompt "+prompt['name'])
+            file_path = os.path.join(directory, prompt['file'])
+            if os.path.isfile(file_path):
+                load_prompt(file_path)
 
 load_all_prompts('prompts')
 
