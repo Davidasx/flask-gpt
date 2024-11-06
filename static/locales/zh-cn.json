@@ -1,5 +1,5 @@
 {
-    "version": "3.2.4",
+    "version": "3.2.4.2",
     "input": "输入你的消息",
     "send": "发送",
     "settings": "设置",
@@ -13,5 +13,6 @@
     "unknown-error": "未知错误",
     "uuid-not-found": "UUID不存在",
     "memory-clear": "确定要清除记忆吗？",
-    "model": "模型"
+    "model": "模型",
+    "custom": "自定义"
 }

@@ -5,9 +5,15 @@
 
 ## Update Log (only after 3.1.0):
 
+### 3.2.4.2
+
+#### [![](https://img.shields.io/badge/Dev-20241107-blue)](https://github.com/Davidasx/flask-gpt/)
+
+New feature: add custom models to the settings.
+
 ### 3.2.4.1
 
-#### [![](https://img.shields.io/badge/Dev-20241105-blue)](https://github.com/Davidasx/flask-gpt/)
+#### [![](https://img.shields.io/badge/Dev-20241105-blue)](https://github.com/Davidasx/flask-gpt/tree/79013d8f685cb3da9c5ac6dca1015a9f1268e677)
 
 New feature: manage system prompts flexibly.
 

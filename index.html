@@ -16,14 +16,14 @@
 
 <body>
     <div class="chat-container">
-        <button id="settings-button" class="settings-button" onclick="openSettings()">
+        <button id="settings-button" class="settings-button" onclick="openSettings()" disabled>
             <i class="fas fa-cog"></i>
         </button>
         <div class="chat-messages" id="chat-messages"></div>
         <div class="chat-input">
             <input type="text" id="message" placeholder="Enter your message" onkeydown="checkEnter(event)"
                 oninput="checkMessage()">
-            <button id="send-button" onclick="sendMessage()" data-i18n="send">Send</button>
+            <button id="send-button" onclick="sendMessage()" data-i18n="send" disabled>Send</button>
         </div>
     </div>
 
@@ -46,16 +46,21 @@
             </div>
             <div class="input-group">
                 <label for="model-select" data-i18n="model">Model</label>
-                <select id="model-select" onchange="setModel(this.value)">
-                    <option value="gpt-4o-stream">4o with stream</option>
-                    <option value="gpt-4o">4o</option>
-                    <option value="gpt-4o-mini-stream">4o mini with stream</option>
-                    <option value="gpt-4o-mini">4o mini</option>
-                    <option value="o1-mini">o1 mini</option>
-                    <option value="o1-mini-stream">o1 mini with stream</option>
-                    <option value="o1-preview">o1 preview</option>
-                    <option value="o1-preview-stream">o1 preview with stream</option>
-                </select>
+                <div class="model-selector-container">
+                    <select id="model-select" onchange="setModel(this.value)">
+                        <option value="gpt-4o-stream">4o with stream</option>
+                        <option value="gpt-4o">4o</option>
+                        <option value="gpt-4o-mini-stream">4o mini with stream</option>
+                        <option value="gpt-4o-mini">4o mini</option>
+                        <option value="o1-preview-stream">o1 preview with stream</option>
+                        <option value="o1-preview">o1 preview</option>
+                        <option value="o1-mini-stream">o1 mini with stream</option>
+                        <option value="o1-mini">o1 mini</option>
+                        <option value="custom" data-i18n="custom">Custom</option>
+                    </select>
+                    <input type="text" id="custom-model-name" class="custom-model-input" placeholder="Model Name"
+                        style="display:none;" oninput="updateCustomModel()">
+                </div>
             </div>
             <h4 data-i18n="history">Chat History</h4>
             <div class="input-group">

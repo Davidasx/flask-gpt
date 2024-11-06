@@ -39,3 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('language-select').value = savedLanguage;
     setLanguage(savedLanguage);
 });
+
+// Translation function
+function translate(key) {
+    const lang = localStorage.getItem('language') || 'en';
+    const translations = JSON.parse(localStorage.getItem(`translations_${lang}`)) || {};
+    return translations[key] || key;
+}

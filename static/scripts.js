@@ -7,14 +7,6 @@ botAvatar.src = "static/images/bot.jpg";
 
 let isBotResponding = false;
 
-// Translation function
-function translate(key) {
-    const lang = localStorage.getItem('language') || 'en';
-    const translations = JSON.parse(localStorage.getItem(`translations_${lang}`)) || {};
-    console.log(lang);
-    return translations[key] || key;
-}
-
 function scrollToBottom() {
     const chatMessages = document.getElementById('chat-messages');
     chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -183,10 +175,8 @@ function syncMessages() {
         });
 }
 
-// Disable send button and load message history on initialization
+// Load message history on initialization
 document.addEventListener('DOMContentLoaded', () => {
-    // Disable button
-    document.getElementById('send-button').disabled = true;
     setTimeout(() => {
         checkMessage();
         syncMessages(); // Call the sync messages function
@@ -300,4 +290,17 @@ document.getElementById('sync-button').addEventListener('click', () => {
     } else {
         alert(translate('invalid-uuid'));
     }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 禁用发送和设置按钮
+    const sendButton = document.getElementById('send-button');
+    const settingsButton = document.getElementById('settings-button');
+    sendButton.disabled = true;
+    settingsButton.disabled = true;
+
+    // 2秒后启用按钮
+    setTimeout(() => {
+        settingsButton.disabled = false;
+    }, 2000);
 });

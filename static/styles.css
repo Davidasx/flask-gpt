@@ -318,3 +318,49 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+
+.model-selector-container {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    /* 根据需要调整间距 */
+}
+
+/* 样式化模型选择器 */
+#model-select {
+    height: 40px;
+    /* 确保与输入框一致 */
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* 样式化自定义模型输入框 */
+.custom-model-input {
+    height: 40px;
+    /* 与选择器高度相同 */
+    padding: 5px 10px;
+    font-size: 16px;
+    margin-left: 10px;
+    /* 两者之间的间距 */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+    /* 使输入框扩展以填充可用空间 */
+    box-sizing: border-box;
+}
+
+/* 响应式调整（可选） */
+@media (max-width: 600px) {
+    .model-selector-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .custom-model-input {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+}
