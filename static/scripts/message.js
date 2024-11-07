@@ -165,6 +165,7 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
         if (userMessage) {
             document.getElementById('chat-messages').removeChild(userMessage);
             document.getElementById('message').value = message;
+            document.getElementById('send-button').disabled = false;
 
             fetch(`/delete_message?user_id=${uuid}`, {
                 method: 'POST',

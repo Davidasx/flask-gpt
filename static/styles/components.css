@@ -1,0 +1,145 @@
+.chat-container {
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.chat-messages {
+    padding: 10px;
+    flex: 1;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Message input area styles */
+.chat-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Message input box styles */
+.chat-input input[type="text"] {
+    width: 100%;
+    padding: 10px 50px 10px 10px;
+    /* Reserve space on the right for the button */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Send button styles */
+.chat-input .send-button {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0;
+    width: 40px;
+    /* Set fixed width to avoid overlapping the input box */
+}
+
+.chat-input .send-button:disabled {
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.chat-input .send-button:hover:not(:disabled) {
+    color: #000;
+}
+
+.message {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.bot {
+    justify-content: flex-start;
+}
+
+.message img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-left: 0;
+}
+
+.message.user img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.message .bubble {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+    position: relative;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.message.user .bubble {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #007bff;
+    color: #fff;
+    position: relative;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.message .bubble h1 {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.message .bubble h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.message .bubble h3 {
+    font-size: 1.17em;
+    font-weight: bold;
+}
+
+.message .bubble h4 {
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.message .bubble h5 {
+    font-size: 0.83em;
+    font-weight: bold;
+}
+
+.message .bubble h6 {
+    font-size: 0.67em;
+    font-weight: bold;
+}

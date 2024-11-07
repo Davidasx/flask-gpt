@@ -9,7 +9,10 @@
         href="https://www.freelogovectors.net/wp-content/uploads/2023/01/chatgpt-logo-freelogovectors.net_.png"
         type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/styles/layout.css">
+    <link rel="stylesheet" href="static/styles/settings.css">
+    <link rel="stylesheet" href="static/styles/components.css">
+    <link rel="stylesheet" href="static/styles/mobile.css">
     <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
@@ -23,22 +26,26 @@
         <div class="chat-input">
             <input type="text" id="message" placeholder="Enter your message" onkeydown="checkEnter(event)"
                 oninput="checkMessage()">
-            <button id="send-button" onclick="sendMessage()" data-i18n="send" disabled>Send</button>
+            <button id="send-button" onclick="sendMessage()" class="send-button" data-i18n-title="send" disabled>
+                <i class="fas fa-paper-plane"></i>
+            </button>
         </div>
     </div>
 
     <!-- Modal for settings -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeSettings()">&times;</span>
-            <h3 data-i18n="settings">Settings</h3>
+            <div class="modal-header">
+                <h3 data-i18n="settings">Settings</h3>
+                <span class="close" onclick="closeSettings()">&times;</span>
+            </div>
             <h4 data-i18n="api-settings">API Settings</h4>
             <div class="input-group">
-                <label for="base-url" data-i18n="base-url">Base URL:</label>
+                <label for="base-url">Base URL:</label>
                 <input type="text" id="base-url" placeholder="Base URL">
             </div>
             <div class="input-group">
-                <label for="api-key" data-i18n="api-key">API Key:</label>
+                <label for="api-key">API Key:</label>
                 <input type="text" id="api-key" placeholder="API Key">
             </div>
             <div class="button-container-end">
@@ -82,11 +89,11 @@
         </div>
     </div>
 
-    <script src="static/formatter.js"></script>
-    <script src="static/message.js"></script>
-    <script src="static/scripts.js"></script>
-    <script src="static/i18n.js"></script>
-    <script src="static/model.js"></script>
+    <script src="static/scripts/formatter.js"></script>
+    <script src="static/scripts/message.js"></script>
+    <script src="static/scripts/main.js"></script>
+    <script src="static/scripts/i18n.js"></script>
+    <script src="static/scripts/model.js"></script>
 </body>
 
 </html>

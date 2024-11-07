@@ -102,7 +102,6 @@ function formatMessage(message) {
         // Remove the same number of leading spaces from each line
         p2 = lines.map(line => line.substring(minLeadingSpaces)).join('\n');
         indentLevel = minLeadingSpaces;
-        console.log('Indent=' + indentLevel);
 
         for (let i = 0; i < p2.length; i++) {
             const char = p2[i];
@@ -162,7 +161,6 @@ function formatMessage(message) {
 
     // Remove blank lines at the end of code blocks
     message = message.replace(/<\/pre>\n+/gim, '</pre>');
-    console.log(message);
     answer = message.trim();
     message = original;
     return answer;

@@ -121,7 +121,9 @@ function checkMessage() {
 }
 
 function openSettings() {
-    document.getElementById('settings-modal').style.display = "block";
+    const modal = document.getElementById('settings-modal');
+    modal.classList.add('show');
+    modal.style.removeProperty('display');
     // Get current configuration and fill in the text boxes
     const baseURL = getCookie('base_url');
     const apiKey = getCookie('api_key');
@@ -132,7 +134,8 @@ function openSettings() {
 }
 
 function closeSettings() {
-    document.getElementById('settings-modal').style.display = "none";
+    const modal = document.getElementById('settings-modal');
+    modal.classList.remove('show');
 }
 
 function generateUUID() {
@@ -203,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 window.onclick = function (event) {
     const modal = document.getElementById('settings-modal');
     if (event.target == modal) {
-        modal.style.display = "none";
+        closeSettings();
     }
 }
 
@@ -293,13 +296,13 @@ document.getElementById('sync-button').addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 禁用发送和设置按钮
+    // Disable send and settings buttons initially
     const sendButton = document.getElementById('send-button');
     const settingsButton = document.getElementById('settings-button');
     sendButton.disabled = true;
     settingsButton.disabled = true;
 
-    // 2秒后启用按钮
+    // Enable buttons after 2 seconds
     setTimeout(() => {
         settingsButton.disabled = false;
     }, 2000);

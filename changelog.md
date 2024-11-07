@@ -1,13 +1,23 @@
 ## Current Version:
 
-[![](https://img.shields.io/badge/Dev-3.2.4.1-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+[![](https://img.shields.io/badge/Dev-3.2.4.3-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
 [![](https://img.shields.io/badge/Main-3.2.3-red)](https://github.com/Davidasx/flask-gpt/tree/main)
 
 ## Update Log (only after 3.1.0):
 
+### 3.2.4.3
+
+#### [![](https://img.shields.io/badge/Dev-20241107-blue)](https://github.com/Davidasx/flask-gpt)
+
+Minor fixes.
+
+Improvements to the filesystem structure.
+
+Updated sender button.
+
 ### 3.2.4.2
 
-#### [![](https://img.shields.io/badge/Dev-20241107-blue)](https://github.com/Davidasx/flask-gpt/)
+#### [![](https://img.shields.io/badge/Dev-20241107-blue)](https://github.com/Davidasx/flask-gpt/tree/2bb503973ea2eb8afe60c711d8dec9e1654588dd)
 
 New feature: add custom models to the settings.
 
