@@ -5,9 +5,15 @@
 
 ## Update Log (only after 3.1.0):
 
+### 3.2.4.6
+
+#### [![](https://img.shields.io/badge/Dev/Main-20241110-blue)](https://github.com/Davidasx/flask-gpt)
+
+Added IP lookup in logs to prevent attacks.
+
 ### 3.2.4.5
 
-#### [![](https://img.shields.io/badge/Dev/Main-20241109-purple)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev/Main-20241109-purple)](https://github.com/Davidasx/flask-gpt/tree/6c304ec)
 
 Added three more languages.
 

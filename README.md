@@ -1,5 +1,9 @@
 # flask-gpt
 
+![code size](https://img.shields.io/github/languages/code-size/Davidasx/flask-gpt)
+
+![last commit](https://img.shields.io/github/last-commit/Davidasx/flask-gpt)
+
 ChatGPT Web UI implemented with Flask, HTML, Javascript and CSS.
 
 Fill in your own API to use.
@@ -30,4 +34,4 @@ The log of the python program will hide all personal information. The only thing
 
 ## Demo site (low performance, Dev branch)
 
-[http://chat.davidx.us.kg/](http://chat.davidx.us.kg/)
+[https://chat.davidx.us.kg/](https://chat.davidx.us.kg/)

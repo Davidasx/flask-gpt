@@ -1,4 +1,3 @@
 .vscode/
 __pycache__/
 .termdbms/
-static/translate.py

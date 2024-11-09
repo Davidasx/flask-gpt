@@ -2,34 +2,23 @@ from flask import Flask, send_from_directory, request, jsonify, Response
 import os
 from openai import OpenAI
 import json
-import logging
 from duckduckgo_search import DDGS
 import time
-import os
+from werkzeug.middleware.proxy_fix import ProxyFix
 from database import init_db, get_chat_log, save_chat_log, delete_chat_log, db, ChatLog
-
-class SensitiveInfoFilter(logging.Filter):
-    def filter(self, record):
-        message = record.getMessage()
-        if 'GET' in message or 'POST' in message:
-            parts = message.split(' ')
-            for i, part in enumerate(parts):
-                if part.startswith('/'):
-                    url = part
-                    if '?' in url:
-                        url = url.split('?')[0]
-                    parts[i] = url
-            record.msg = ' '.join(parts)
-            record.args = ()  # Clear args to avoid formatting errors
-        return True
+import logging
+from logging_config import setup_logging
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
 init_db(app)
+
+access_logger = setup_logging()
 
 pre_prompt = []
 
 def load_prompt(file_path):
-    if file_path[0]=='#':
+    if file_path[0] == '#':
         return
     global pre_prompt
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -49,7 +38,7 @@ def load_all_prompts(directory):
 
     for prompt in prompts_data.get('prompts', []):
         if prompt.get('enabled', False):
-            print("Loaded prompt "+prompt['name'])
+            print("Loaded prompt " + prompt['name'])
             file_path = os.path.join(directory, prompt['file'])
             if os.path.isfile(file_path):
                 load_prompt(file_path)
@@ -87,8 +76,8 @@ def chat():
     time_param = request.args.get('time')
     model = request.args.get('model')
     stream = False
-    if len(model) > 7 and model[-7:]=="-stream":
-        model=model[:-7]
+    if len(model) > 7 and model[-7:] == "-stream":
+        model = model[:-7]
         stream = True
     if request.method == 'POST':
         data = request.get_json()
@@ -126,14 +115,14 @@ def chat():
         
         order = [0, 1]
         if time_param:
-            timedate=f"{time_param[:4]}-{time_param[4:6]}-{time_param[6:8]} {time_param[8:10]}:{time_param[10:12]}"
+            timedate = f"{time_param[:4]}-{time_param[4:6]}-{time_param[6:8]} {time_param[8:10]}:{time_param[10:12]}"
         else:
             timedate = time.strftime("%Y-%m-%d %H:%M")
-        timeprompt={"role":"system","content":"The current datetime is \
-"+ timedate + ". Use this information as if you can access the real \
-datetime. Note that as the time can change, always use the time in \
-this message as the current time. Do not use the time from any other \
-messages because they can be outdated."}
+        timeprompt = {"role":"system","content":"The current datetime is "
+            + timedate + ". Use this information as if you can access the real "
+            "datetime. Note that as the time can change, always use the time in "
+            "this message as the current time. Do not use the time from any other "
+            "messages because they can be outdated."}
         full_log = pre_prompt + [timeprompt] + chat_log
         bot = ChatBot(stream=stream, api_key=api_key, base_url=base_url, model=model, messages=full_log)
         if hidden:
@@ -172,7 +161,7 @@ def clear_memory():
 @app.route('/bot_message', methods=['POST'])
 def bot():
     try:
-        user_id=request.args.get('user_id')
+        user_id = request.args.get('user_id')
         data = request.get_json()
         message = data.get('message')
         
@@ -256,19 +245,19 @@ def search_chat():
     
     concats = []
     for i in range(0, len(prompts)):
-        prompt=prompts[i]
+        prompt = prompts[i]
         if "DUCK_PROXY" in os.environ:
-            duck=DDGS(proxy=os.environ["DUCK_PROXY"])
+            duck = DDGS(proxy=os.environ["DUCK_PROXY"])
         else:
-            duck=DDGS()
+            duck = DDGS()
         results = duck.text(prompt, max_results=10)
         bodies = [result['body'] for result in results]
         titles = [result['title'] for result in results]
         concat = ''.join(f"{id} -- {title}:{body}\n\n" for id, title, body in zip(range(1, len(bodies)+1), titles, bodies))
-        concat= "Search query " + prompt + ":\n\n" + concat
+        concat = "Search query " + prompt + ":\n\n" + concat
         concats.append(concat)
     
-    full= '\n\n'.join(concats)
+    full = '\n\n'.join(concats)
     full_escaped = full.replace('"', '\\"')
     
     answer = (
@@ -282,9 +271,20 @@ def search_chat():
     )
     
     return jsonify({'status': 'success','answer': answer}), 200
-    
+
+@app.after_request
+def log_request(response):
+    ip = request.remote_addr
+    method = request.method
+    path = request.path
+    status = response.status_code
+    access_logger.info('', extra={
+        'ip': ip,
+        'method': method,
+        'path': path,
+        'status': status
+    })
+    return response
 
 if __name__ == '__main__':
-    log = logging.getLogger('werkzeug')
-    log.addFilter(SensitiveInfoFilter())
     app.run(host="0.0.0.0", port=7788)
