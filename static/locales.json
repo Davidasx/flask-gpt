@@ -1,6 +1,6 @@
 {
-    "version": "3.2.4.3",
-    "translations":{
+    "version": "3.2.4.5",
+    "translations": {
         "en": {
             "input": "Enter your message",
             "send": "Send",
@@ -16,7 +16,8 @@
             "uuid-not-found": "UUID does not exist",
             "memory-clear": "Are you sure you want to clear the memory?",
             "model": "Model",
-            "custom": "Custom"
+            "custom": "Custom",
+            "model-name": "Model Name"
         },
         "zh-cn": {
             "input": "输入你的消息",
@@ -33,10 +34,10 @@
             "uuid-not-found": "UUID不存在",
             "memory-clear": "确定要清除记忆吗？",
             "model": "模型",
-            "custom": "自定义"
+            "custom": "自定义",
+            "model-name": "模型名称"
         },
         "zh-hk": {
-            "version": "3.2.4.2",
             "input": "輸入你的消息",
             "send": "發送",
             "settings": "設置",
@@ -51,7 +52,62 @@
             "uuid-not-found": "UUID不存在",
             "memory-clear": "確定要清除記憶嗎？",
             "model": "模型",
-            "custom": "自定義"
+            "custom": "自定義",
+            "model-name": "模型名稱"
+        },
+        "fr": {
+            "input": "Entrez votre message",
+            "send": "Envoyer",
+            "settings": "Paramètres",
+            "api-settings": "Paramètres de l’API",
+            "history": "Historique des chats",
+            "sync": "Synchronisation",
+            "clear": "Effacer la mémoire",
+            "save": "Sauvegarder",
+            "language": "Langue",
+            "invalid-uuid": "Entrez un UUID valide",
+            "unknown-error": "Erreur inconnue",
+            "uuid-not-found": "L’UUID n’existe pas",
+            "memory-clear": "Êtes-vous sûr de vouloir effacer la mémoire ?",
+            "model": "Modèle",
+            "custom": "Coutume",
+            "model-name": "Nom du modèle"
+        },
+        "de": {
+            "input": "Geben Sie Ihre Nachricht ein",
+            "send": "Senden",
+            "settings": "Einstellungen",
+            "api-settings": "API-Einstellungen",
+            "history": "Chat-Verlauf",
+            "sync": "Synchronisieren",
+            "clear": "Speicher löschen",
+            "save": "Retten",
+            "language": "Sprache",
+            "invalid-uuid": "Bitte geben Sie eine gültige UUID ein.",
+            "unknown-error": "Unbekannter Fehler",
+            "uuid-not-found": "UUID existiert nicht",
+            "memory-clear": "Sind Sie sicher, dass Sie den Speicher löschen möchten?",
+            "model": "Modell",
+            "custom": "Gewohnheit",
+            "model-name": "Modellname"
+        },
+        "es": {
+            "input": "Escribe tu mensaje",
+            "send": "Enviar",
+            "settings": "Configuración",
+            "api-settings": "Configuración de la API",
+            "history": "Historial de chat",
+            "sync": "Sincronizar",
+            "clear": "Borrar memoria",
+            "save": "Salvar",
+            "language": "Idioma",
+            "invalid-uuid": "Introduzca un UUID válido",
+            "unknown-error": "Error desconocido",
+            "uuid-not-found": "UUID no existe",
+            "memory-clear": "¿Estás seguro de que quieres borrar la memoria?",
+            "model": "Modelo",
+            "custom": "Costumbre",
+            "model-name": "Nombre del modelo"
         }
     }
 }

@@ -31,6 +31,15 @@ function translatePage(translations, lang) {
             messageElement.placeholder = 'Enter your message';
         }
     }
+
+    const customModelName = document.getElementById('custom-model-name');
+    if (customModelName) {
+        if (translations[lang] && translations[lang]['model-name']) {
+            customModelName.placeholder = translations[lang]['model-name'];
+        } else {
+            customModelName.placeholder = 'Model Name';
+        }
+    }
 }
 
 function translate(key) {

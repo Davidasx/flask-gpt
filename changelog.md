@@ -5,9 +5,17 @@
 
 ## Update Log (only after 3.1.0):
 
-### 3.2.4.4
+### 3.2.4.5
 
 #### [![](https://img.shields.io/badge/Dev/Main-20241109-purple)](https://github.com/Davidasx/flask-gpt)
+
+Added three more languages.
+
+TODO Completed: [#002](TODO/002.md) Add more languages.
+
+### 3.2.4.4
+
+#### [![](https://img.shields.io/badge/Dev/Main-20241109-purple)](https://github.com/Davidasx/flask-gpt/tree/d530756)
 
 Improved i18n support.
 
