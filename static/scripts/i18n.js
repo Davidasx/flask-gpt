@@ -34,23 +34,27 @@ function translatePage(translations, lang) {
 }
 
 function translate(key) {
-    const lang = localStorage.getItem('language') || 'en';
+    const lang = (localStorage.getItem('language') || 'en').toLowerCase();
     const allTranslations = JSON.parse(localStorage.getItem('allTranslations')) || {};
     return allTranslations[lang][key] || key;
 }
 
 async function setLanguage(lang) {
     const allTranslations = JSON.parse(localStorage.getItem('allTranslations')) || {};
-    translatePage(allTranslations, lang);
-    localStorage.setItem('language', lang);
+    translatePage(allTranslations, lang.toLowerCase());
+    localStorage.setItem('language', lang.toLowerCase());
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const savedLanguage = localStorage.getItem('language') || 'en';
+    let savedLanguage = (localStorage.getItem('language') || navigator.language || 'en').toLowerCase();
     const storedVersion = localStorage.getItem('translations_version');
     const data = await loadTranslations();
     const currentVersion = data.version;
     const allTranslations = data.translations;
+
+    if (!allTranslations[savedLanguage]) {
+        savedLanguage = 'en';
+    }
 
     if (storedVersion !== currentVersion) {
         localStorage.setItem('allTranslations', JSON.stringify(allTranslations));
