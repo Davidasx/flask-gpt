@@ -137,7 +137,7 @@ def chat():
                     if not chunk.choices:
                         continue
                     if chunk.choices[0].delta.content is None:
-                        break
+                        continue
                     yield f"data: {json.dumps({'content': str(chunk.choices[0].delta.content), 'end': False})}\n\n"
                 yield f"data: {json.dumps({'content': '', 'end': True})}\n\n"
             else:
