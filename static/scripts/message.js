@@ -32,8 +32,8 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
     const updatedChatLog = chatLog ? JSON.parse(chatLog) : [];
     const storedModel = localStorage.getItem('model') || 'gpt-4o';
     const model = storedModel === 'custom' ? localStorage.getItem('custom-model') : storedModel;
-    const stream = document.getElementById('stream-enabled').checked.toString();
-    const search = document.getElementById('search-enabled').checked.toString();
+    const stream = localStorage.getItem('stream') || 'true';
+    const search = localStorage.getItem('search') || 'false';
     updatedChatLog.push({ role: 'user', content: message });
 
     const uuid = getOrCreateUUID();

@@ -65,11 +65,11 @@
             </div>
             <div class="input-group checkbox-group">
                 <div class="checkbox-container">
-                    <input type="checkbox" id="stream-enabled" checked>
+                    <input type="checkbox" id="stream-enabled" checked onchange="setStream(this.checked)">
                     <label for="stream-enabled" data-i18n="stream">Stream</label>
                 </div>
                 <div class="checkbox-container">
-                    <input type="checkbox" id="search-enabled">
+                    <input type="checkbox" id="search-enabled" onchange="setSearch(this.checked)">
                     <label for="search-enabled" data-i18n="search">Search</label>
                 </div>
             </div>
@@ -101,6 +101,7 @@
     <script src="static/scripts/main.js"></script>
     <script src="static/scripts/i18n.js"></script>
     <script src="static/scripts/model.js"></script>
+    <script src="static/scripts/tools.js"></script>
 </body>
 
 </html>

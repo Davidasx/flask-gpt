@@ -1,13 +1,19 @@
 ## Current Version:
 
-[![](https://img.shields.io/badge/Dev-3.2.4.4-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+[![](https://img.shields.io/badge/Dev-3.2.5.1-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
 [![](https://img.shields.io/badge/Main-3.2.4.4-red)](https://github.com/Davidasx/flask-gpt/tree/main)
 
 ## Update Log (only after 3.1.0):
 
-### 3.2.5
+### 3.2.5.1
 
 #### [![](https://img.shields.io/badge/Dev-20241211-blue)](https://github.com/Davidasx/flask-gpt)
+
+Enabled caching of choices `stream` and `search`.
+
+### 3.2.5
+
+#### [![](https://img.shields.io/badge/Dev-20241211-blue)](https://github.com/Davidasx/flask-gpt/tree/49958ee)
 
 Enabled stream and search toggle. Save tokens if you don't want the search feature.
 
