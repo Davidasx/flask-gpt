@@ -20,7 +20,7 @@ function updateCustomModel() {
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const modelSelect = document.getElementById('model-select');
-        const savedModel = localStorage.getItem('model') || 'gpt-4o-stream';
+        const savedModel = localStorage.getItem('model') || 'gpt-4o';
         modelSelect.value = savedModel;
         const customName = localStorage.getItem('custom-model') || '';
         if (customName != '') {

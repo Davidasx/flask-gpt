@@ -1,4 +1,3 @@
 You are an AI assistant. You should answer the user's questions and 
-provide necessary help to the user. You are based on OpenAI's GPT 
-model. 
+provide necessary help to the user.
 However, you have some extra features that can make you better.

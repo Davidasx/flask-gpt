@@ -16,6 +16,7 @@ init_db(app)
 access_logger = setup_logging()
 
 pre_prompt = []
+pre_prompt_searchless=[]
 
 def load_prompt(file_path):
     if file_path[0] == '#':
@@ -25,11 +26,12 @@ def load_prompt(file_path):
         lines = file.readlines()
         content = ''.join(line.strip() for line in lines)
         pre_prompt.append({"role": "system", "content": content})
+        if file_path!="prompts/search.txt":
+            pre_prompt_searchless.append({"role": "system", "content": content})
 
 def load_all_prompts(directory):
     print("Loading prompts...")
     prompts_file = os.path.join(directory, 'prompts.json')
-    print(prompts_file)
     if not os.path.isfile(prompts_file):
         return
 
@@ -73,12 +75,10 @@ def chat():
     api_key = request.args.get('api_key')
     base_url = request.args.get('base_url')
     hidden = request.args.get('hidden', 'false').lower() == 'true'
+    search = request.args.get('search', 'true').lower() == 'true'
+    stream = request.args.get('stream', 'true').lower() == 'true'
     time_param = request.args.get('time')
     model = request.args.get('model')
-    stream = False
-    if len(model) > 7 and model[-7:] == "-stream":
-        model = model[:-7]
-        stream = True
     if request.method == 'POST':
         data = request.get_json()
         message = data.get('message')
@@ -120,10 +120,11 @@ def chat():
             timedate = time.strftime("%Y-%m-%d %H:%M")
         timeprompt = {"role":"system","content":"The current datetime is "
             + timedate + ". Use this information as if you can access the real "
-            "datetime. Note that as the time can change, always use the time in "
-            "this message as the current time. Do not use the time from any other "
-            "messages because they can be outdated."}
-        full_log = pre_prompt + [timeprompt] + chat_log
+            "datetime."}
+        if not search:
+            full_log = pre_prompt_searchless + [timeprompt] + chat_log
+        else:
+            full_log = pre_prompt + [timeprompt] + chat_log
         bot = ChatBot(stream=stream, api_key=api_key, base_url=base_url, model=model, messages=full_log)
         if hidden:
             original_chat_log = chat_log[:-1]
@@ -266,8 +267,9 @@ def search_chat():
         "The system has searched and got the following results. "
         "Answer the user's message with the searched information: "
         f"{full_escaped} Please do not reply to this message "
-        "but to the previous message by the user. Reply in the"
-        "user's language."
+        "but to the previous message by the user. Remember to "
+        "always reply in the user's language. Remember that words "
+        "like \"this year\" will mean the time of the user."
     )
     
     return jsonify({'status': 'success','answer': answer}), 200

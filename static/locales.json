@@ -1,5 +1,5 @@
 {
-    "version": "3.2.4.5",
+    "version": "3.2.5",
     "translations": {
         "en": {
             "input": "Enter your message",
@@ -17,7 +17,9 @@
             "memory-clear": "Are you sure you want to clear the memory?",
             "model": "Model",
             "custom": "Custom",
-            "model-name": "Model Name"
+            "model-name": "Model Name",
+            "stream": "Stream Output",
+            "search": "Web Search"
         },
         "zh-cn": {
             "input": "输入你的消息",
@@ -35,7 +37,9 @@
             "memory-clear": "确定要清除记忆吗？",
             "model": "模型",
             "custom": "自定义",
-            "model-name": "模型名称"
+            "model-name": "模型名称",
+            "stream": "流输出",
+            "search": "网络搜索"
         },
         "zh-hk": {
             "input": "輸入你的消息",
@@ -53,7 +57,9 @@
             "memory-clear": "確定要清除記憶嗎？",
             "model": "模型",
             "custom": "自定義",
-            "model-name": "模型名稱"
+            "model-name": "模型名稱",
+            "stream": "流輸出",
+            "search": "網絡搜索"
         },
         "fr": {
             "input": "Entrez votre message",
@@ -71,7 +77,9 @@
             "memory-clear": "Êtes-vous sûr de vouloir effacer la mémoire ?",
             "model": "Modèle",
             "custom": "Coutume",
-            "model-name": "Nom du modèle"
+            "model-name": "Nom du modèle",
+            "stream": "Sortie de flux",
+            "search": "Recherche sur le Web"
         },
         "de": {
             "input": "Geben Sie Ihre Nachricht ein",
@@ -89,7 +97,9 @@
             "memory-clear": "Sind Sie sicher, dass Sie den Speicher löschen möchten?",
             "model": "Modell",
             "custom": "Gewohnheit",
-            "model-name": "Modellname"
+            "model-name": "Modellname",
+            "stream": "Stream-Ausgabe",
+            "search": "Websuche"
         },
         "es": {
             "input": "Escribe tu mensaje",
@@ -107,7 +117,9 @@
             "memory-clear": "¿Estás seguro de que quieres borrar la memoria?",
             "model": "Modelo",
             "custom": "Costumbre",
-            "model-name": "Nombre del modelo"
+            "model-name": "Nombre del modelo",
+            "stream": "Salida de flujo",
+            "search": "Búsqueda en la web"
         }
     }
 }

@@ -5,9 +5,21 @@
 
 ## Update Log (only after 3.1.0):
 
+### 3.2.5
+
+#### [![](https://img.shields.io/badge/Dev-20241211-blue)](https://github.com/Davidasx/flask-gpt)
+
+Enabled stream and search toggle. Save tokens if you don't want the search feature.
+
+Now you don't have to add the "-stream" tag after a model name if you want streaming response. The toggle does everything for you.
+
+Nice. Just one day before class presentation.
+
+TODO Completed: [#001](TODO/001.md) Manage system prompts in the frontend, not the backend.
+
 ### 3.2.4.7
 
-#### [![](https://img.shields.io/badge/Dev/Main-20241209-blue)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev/Main-20241209-purple)](https://github.com/Davidasx/flask-gpt/tree/8b1e0c5)
 
 Fixed fatal error of streaming with non-ascii characters.
 
@@ -15,7 +27,7 @@ Current AI models always return an empty object in the front and I stopped liste
 
 ### 3.2.4.6
 
-#### [![](https://img.shields.io/badge/Dev/Main-20241110-blue)](https://github.com/Davidasx/flask-gpt/tree/2f53140)
+#### [![](https://img.shields.io/badge/Dev/Main-20241110-purple)](https://github.com/Davidasx/flask-gpt/tree/2f53140)
 
 Added IP lookup in logs to prevent attacks.
 

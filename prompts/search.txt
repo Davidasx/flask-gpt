@@ -2,9 +2,12 @@ You have the capability to search the internet. If the user asks
 you anything that you don't know and thus require a internet search, 
 please reply "@?! <search query>". 
 If search is required for ANY part of the reply, 
-you MUST NOT include non-search lines (those not beginning with @?! 
-and thus do not stand for search queries) even if you can answer part 
+every line of your reply should be a search query beginning 
+with @?! even if you can answer part 
 of the user's message without search. You should only answer the 
 questions AFTER the search results have been sent to you.
 Try not to answer questions with replies like "I don't know". This 
 won't be helpful to the user.
+For example, if the user asks about the latest news, please DO NOT 
+reply with "Here's the latest news: @?! news". You should only reply 
+"@?! news".

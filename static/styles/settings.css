@@ -192,3 +192,23 @@
     margin: -5px -10px 0 0;
     /* Fine-tune alignment */
 }
+.checkbox-group {
+    display: flex;
+    gap: 2rem;
+    margin-top: 0.5rem;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.checkbox-container label {
+    margin: 0;
+}
