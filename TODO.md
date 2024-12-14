@@ -1,6 +1,6 @@
 # TODO List
 ## In Progress
-All clear!
+- [] [#003](TODO/003.md) Support different logos for different models.
 
 ## Completed
 - [x] [#002](TODO/002.md) Add more languages.

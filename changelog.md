@@ -5,9 +5,17 @@
 
 ## Update Log (only after 3.1.0):
 
+### 3.2.5.2
+
+#### [![](https://img.shields.io/badge/Dev-20241214-blue)](https://github.com/Davidasx/flask-gpt)
+
+Fixed o1 models by removing system prompts. (They currently don't support those.)
+
+TODO: [#003](TODO/003.md) Support different logos for different models.
+
 ### 3.2.5.1
 
-#### [![](https://img.shields.io/badge/Dev-20241211-blue)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev-20241211-blue)](https://github.com/Davidasx/flask-gpt/tree/6651631)
 
 Enabled caching of choices `stream` and `search`.
 

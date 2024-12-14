@@ -121,7 +121,9 @@ def chat():
         timeprompt = {"role":"system","content":"The current datetime is "
             + timedate + ". Use this information as if you can access the real "
             "datetime."}
-        if not search:
+        if model[0:2] == "o1":
+            full_log=chat_log
+        elif not search:
             full_log = pre_prompt_searchless + [timeprompt] + chat_log
         else:
             full_log = pre_prompt + [timeprompt] + chat_log
