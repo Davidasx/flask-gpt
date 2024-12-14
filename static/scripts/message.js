@@ -32,8 +32,11 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
     const updatedChatLog = chatLog ? JSON.parse(chatLog) : [];
     const storedModel = localStorage.getItem('model') || 'gpt-4o';
     const model = storedModel === 'custom' ? localStorage.getItem('custom-model') : storedModel;
-    const stream = localStorage.getItem('stream') || 'true';
+    const tempStream = localStorage.getItem('stream') || 'true';
     const search = localStorage.getItem('search') || 'false';
+    const noSystem = localStorage.getItem('noSystem') || 'false';
+    const noStream = localStorage.getItem('noStream') || 'false';
+    const stream = tempStream === 'true' && noStream === 'false';
     updatedChatLog.push({ role: 'user', content: message });
 
     const uuid = getOrCreateUUID();
@@ -47,7 +50,7 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const userTime = `${year}${month}${day}${hours}${minutes}`;
     
-    let url = `/chat?user_id=${uuid}&api_key=${apiKey}&base_url=${baseUrl}&time=${userTime}&model=${model}&stream=${stream}&search=${search}`;
+    let url = `/chat?user_id=${uuid}&api_key=${apiKey}&base_url=${baseUrl}&time=${userTime}&model=${model}&stream=${stream}&search=${search}&no_system=${noSystem}`;
     if (hidden) {
         url += '&hidden=true';
     }
@@ -145,7 +148,6 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
                         }
                         return response.json();
                     }).then(data => {
-                        console.log('Message sent to /bot:', data);
                     }).catch(handleFetchError);
                 }
             }
@@ -180,7 +182,6 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
                 }
                 return response.json();
             }).then(data => {
-                console.log('Message deleted:', data);
             }).catch(error => {
                 console.error('Fetch error:', error);
             });

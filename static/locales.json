@@ -1,5 +1,5 @@
 {
-    "version": "3.2.5",
+    "version": "3.2.5.4",
     "translations": {
         "en": {
             "input": "Enter your message",
@@ -19,7 +19,8 @@
             "custom": "Custom",
             "model-name": "Model Name",
             "stream": "Stream Output",
-            "search": "Web Search"
+            "search": "Web Search",
+            "no-system": "Disable System Prompts"
         },
         "zh-cn": {
             "input": "输入你的消息",
@@ -39,7 +40,8 @@
             "custom": "自定义",
             "model-name": "模型名称",
             "stream": "流输出",
-            "search": "网络搜索"
+            "search": "网络搜索",
+            "no-system": "禁用系统提示词"
         },
         "zh-hk": {
             "input": "輸入你的消息",
@@ -59,7 +61,8 @@
             "custom": "自定義",
             "model-name": "模型名稱",
             "stream": "流輸出",
-            "search": "網絡搜索"
+            "search": "網絡搜索",
+            "no-system": "禁用系統提示詞"
         },
         "fr": {
             "input": "Entrez votre message",
@@ -79,7 +82,8 @@
             "custom": "Coutume",
             "model-name": "Nom du modèle",
             "stream": "Sortie de flux",
-            "search": "Recherche sur le Web"
+            "search": "Recherche sur le Web",
+            "no-system": "Désactiver les invites système"
         },
         "de": {
             "input": "Geben Sie Ihre Nachricht ein",
@@ -99,7 +103,8 @@
             "custom": "Gewohnheit",
             "model-name": "Modellname",
             "stream": "Stream-Ausgabe",
-            "search": "Websuche"
+            "search": "Websuche",
+            "no-system": "Deaktivieren von Systemaufforderungen"
         },
         "es": {
             "input": "Escribe tu mensaje",
@@ -119,7 +124,8 @@
             "custom": "Costumbre",
             "model-name": "Nombre del modelo",
             "stream": "Salida de flujo",
-            "search": "Búsqueda en la web"
+            "search": "Búsqueda en la web",
+            "no-system": "Desactivar las indicaciones del sistema"
         }
     }
 }

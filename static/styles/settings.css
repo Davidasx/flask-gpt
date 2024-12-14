@@ -140,38 +140,6 @@
     cursor: pointer;
 }
 
-.model-selector-container {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-    /* Adjust spacing as needed */
-}
-
-/* Style the model selector */
-#model-select {
-    height: 40px;
-    /* Ensure it matches the input box */
-    padding: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* Style the custom model input box */
-.custom-model-input {
-    height: 40px;
-    /* Match the height of the selector */
-    padding: 5px 10px;
-    font-size: 16px;
-    margin-left: 10px;
-    /* Spacing between the two */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    flex: 1;
-    /* Allow the input box to expand to fill available space */
-    box-sizing: border-box;
-}
-
 .modal-header {
     display: flex;
     justify-content: space-between;

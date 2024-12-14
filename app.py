@@ -77,6 +77,7 @@ def chat():
     hidden = request.args.get('hidden', 'false').lower() == 'true'
     search = request.args.get('search', 'true').lower() == 'true'
     stream = request.args.get('stream', 'true').lower() == 'true'
+    no_system = request.args.get('no_system', 'false').lower() == 'true'
     time_param = request.args.get('time')
     model = request.args.get('model')
     if request.method == 'POST':
@@ -121,7 +122,7 @@ def chat():
         timeprompt = {"role":"system","content":"The current datetime is "
             + timedate + ". Use this information as if you can access the real "
             "datetime."}
-        if model[0:2] == "o1":
+        if no_system:
             full_log=chat_log
         elif not search:
             full_log = pre_prompt_searchless + [timeprompt] + chat_log

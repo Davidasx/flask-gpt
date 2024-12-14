@@ -1,0 +1,68 @@
+.model-selector-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.select-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 2;
+}
+
+#model-select {
+    width: 100%;
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    appearance: auto;
+    background-color: white;
+}
+
+.model-icon {
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+}
+
+.custom-model-input {
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+.icon-openai {
+    background-image: url('../images/openai.svg');
+}
+
+.icon-meta {
+    background-image: url('../images/meta.svg');
+}
+
+.icon-anthropic {
+    background-image: url('../images/anthropic.svg');
+}
+
+.icon-mistral {
+    background-image: url('../images/mistral.svg');
+}
+
+.icon-qwen {
+    background-image: url('../images/qwen.svg');
+}
+
+.icon-misc {
+    background-image: url('../images/robot.svg');
+}

@@ -79,7 +79,6 @@ function clearMemory(user_id, confirmClear = true) {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                console.log(data.message);
                 // Clear messages on the screen
                 const chatMessages = document.getElementById('chat-messages');
                 chatMessages.innerHTML = '';

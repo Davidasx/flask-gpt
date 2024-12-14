@@ -1,13 +1,31 @@
 ## Current Version:
 
-[![](https://img.shields.io/badge/Dev-3.2.5.1-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+[![](https://img.shields.io/badge/Dev-3.2.5.3-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
 [![](https://img.shields.io/badge/Main-3.2.4.4-red)](https://github.com/Davidasx/flask-gpt/tree/main)
 
 ## Update Log (only after 3.1.0):
 
-### 3.2.5.2
+### 3.2.5.3
 
 #### [![](https://img.shields.io/badge/Dev-20241214-blue)](https://github.com/Davidasx/flask-gpt)
+
+Partially completed TODO 003 by adding logos on model select list.
+
+Supported logos:
+- OpenAI
+- Anthropic
+- Meta
+- Mistral
+- Qwen
+- Others (use a robot emoji)
+
+Made the disable system prompt function more extensible. Mainly used for the experimental models in free-chat that mix system prompts with user prompts.
+
+TODO Partially Completed: [#003](TODO/003.md) Support different logos for different models.
+
+### 3.2.5.2
+
+#### [![](https://img.shields.io/badge/Dev-20241214-blue)](https://github.com/Davidasx/flask-gpt/tree/669b1ab)
 
 Fixed o1 models by removing system prompts. (They currently don't support those.)
 

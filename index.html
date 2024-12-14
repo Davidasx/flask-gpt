@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="static/styles/settings.css">
     <link rel="stylesheet" href="static/styles/components.css">
     <link rel="stylesheet" href="static/styles/mobile.css">
+    <link rel="stylesheet" href="static/styles/models.css">
     <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
@@ -52,15 +53,18 @@
             <div class="input-group">
                 <label for="model-select" data-i18n="model">Model</label>
                 <div class="model-selector-container">
-                    <select id="model-select" onchange="setModel(this.value)">
-                        <option value="gpt-4o">GPT 4o</option>
-                        <option value="gpt-4o-mini">GPT 4o mini</option>
-                        <option value="o1-preview">o1 preview</option>
-                        <option value="o1-mini">o1 mini</option>
-                        <option value="custom" data-i18n="custom">Custom</option>
-                    </select>
+                    <div class="select-with-icon">
+                        <span id="model-icon" class="model-icon icon-openai"></span>
+                        <select id="model-select" onchange="handleModelChange(this.value)">
+                            <option value="gpt-4o">GPT 4o</option>
+                            <option value="gpt-4o-mini">GPT 4o mini</option>
+                            <option value="o1-preview" data-auto-no-system="true">o1 preview</option>
+                            <option value="o1-mini" data-auto-no-system="true">o1 mini</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
                     <input type="text" id="custom-model-name" class="custom-model-input" placeholder="Model Name"
-                        style="display:none;" oninput="updateCustomModel()">
+                        style="display:none;" oninput="updateCustomModel(this.value)">
                 </div>
             </div>
             <div class="input-group checkbox-group">
@@ -71,6 +75,10 @@
                 <div class="checkbox-container">
                     <input type="checkbox" id="search-enabled" onchange="setSearch(this.checked)">
                     <label for="search-enabled" data-i18n="search">Search</label>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="no-system" onchange="setNoSystem(this.checked,false)">
+                    <label for="no-system" data-i18n="no-system">Disable System Prompts</label>
                 </div>
             </div>
             <h4 data-i18n="history">Chat History</h4>
