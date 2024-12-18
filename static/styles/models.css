@@ -47,12 +47,20 @@
     background-image: url('../images/openai.svg');
 }
 
+.icon-anthropic {
+    background-image: url('../images/anthropic.svg');
+}
+
+.icon-gemini {
+    background-image: url('../images/gemini.svg');
+}
+
 .icon-meta {
     background-image: url('../images/meta.svg');
 }
 
-.icon-anthropic {
-    background-image: url('../images/anthropic.svg');
+.icon-xai {
+    background-image: url('../images/xai.svg');
 }
 
 .icon-mistral {

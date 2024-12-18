@@ -55,6 +55,15 @@ class ChatBot:
         self.stream = stream
 
     def reply(self):
+        processed_messages = []
+        for msg in self.messages:
+            if msg['role'].startswith('assistant-'):
+                processed_messages.append({
+                    'role': 'assistant',
+                    'content': msg['content']
+                })
+            else:
+                processed_messages.append(msg)
         try:
             completion = self.client.chat.completions.create(
                 model=self.model,
@@ -166,6 +175,7 @@ def clear_memory():
 def bot():
     try:
         user_id = request.args.get('user_id')
+        model = request.args.get('model')
         data = request.get_json()
         message = data.get('message')
         
@@ -177,7 +187,7 @@ def bot():
             return jsonify({'status': 'error', 'message': 'No chat log found for user'}), 404
         
         chat_log = json.loads(chat_log_entry.chat_log)
-        chat_log.append({'role': 'assistant', 'content': message})
+        chat_log.append({'role': 'assistant-'+model, 'content': message})
         
         save_chat_log(user_id, chat_log)
         

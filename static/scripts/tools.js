@@ -54,6 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setNoSystem(noSystemCheck.checked,true);
 
         const savedNoStream = localStorage.getItem('noStream') || 'false';
-        setNoStream(savedNoSystem === 'true');
+        setNoStream(savedNoStream === 'true');
     }, 2000);
 });

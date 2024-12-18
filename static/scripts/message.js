@@ -76,7 +76,8 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
                 botMessage = document.createElement('div');
                 botMessage.className = 'message bot';
                 botMessage.setAttribute('data-content', '');
-                botMessage.innerHTML = `<img src="${botAvatar.src}" alt="ChatGPT Logo"><div class="bubble"></div>`;
+                const avatarSrc = getModelAvatar(`assistant-${model}`);
+                botMessage.innerHTML = `<img src="${avatarSrc}" alt="Bot Avatar"><div class="bubble"></div>`;
                 document.getElementById('chat-messages').appendChild(botMessage);
             }
             contentBuffer += data.content;
@@ -136,7 +137,8 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
                     }).catch(handleFetchError);
                 } else {
                     // Send message to /bot_message route
-                    fetch(`/bot_message?user_id=${uuid}`, {
+                    console.log(model)
+                    fetch(`/bot_message?user_id=${uuid}&model=${model}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

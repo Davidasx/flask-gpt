@@ -18,11 +18,17 @@ function updateIcon() {
     if (modelName.includes('gpt') || modelName.includes('o1')) {
         iconSpan.className = 'model-icon icon-openai';
     }
-    else if (modelName.includes('claude') || modelName.includes('anthropic')) {
+    else if (modelName.includes('claude')) {
         iconSpan.className = 'model-icon icon-anthropic';
     }
-    else if (modelName.includes('llama') || modelName.includes('meta')) {
+    else if (modelName.includes('gemini')) {
+        iconSpan.className = 'model-icon icon-gemini';
+    }
+    else if (modelName.includes('llama')) {
         iconSpan.className = 'model-icon icon-meta';
+    }
+    else if (modelName.includes('grok')) {
+        iconSpan.className = 'model-icon icon-xai';
     }
     else if (modelName.includes('mistral') || modelName.includes('mixtral')) {
         iconSpan.className = 'model-icon icon-mistral';
@@ -44,8 +50,8 @@ function handleModelChange(value) {
     const iconSpan = document.getElementById('model-icon');
 
     const selectedOption = modelSelect.options[modelSelect.selectedIndex];
-    const autoNoSystem = selectedOption.getAttribute('data-auto-no-system') === 'true';
-    const autoNoStream = selectedOption.getAttribute('data-auto-no-stream') === 'true';
+    const autoNoSystem = selectedOption?.getAttribute('data-auto-no-system') ?? false;
+    const autoNoStream = selectedOption?.getAttribute('data-auto-no-stream') ?? false;
     const noSystemCheckbox = document.getElementById('no-system');
 
     if (autoNoSystem) {

@@ -5,9 +5,21 @@
 
 ## Update Log (only after 3.1.0):
 
+### 3.2.5.4
+
+#### [![](https://img.shields.io/badge/Dev-20241218-blue)](https://github.com/Davidasx/flask-gpt)
+
+Completed TODO 003.
+
+Added Google Gemini logo.
+
+Now the bot avatar in the chat will change according to the model you selected. You can also select different models and you will see different bot avatars in the chat playground.
+
+TODO Completed: [#003](TODO/003.md) Support different logos for different models.
+
 ### 3.2.5.3
 
-#### [![](https://img.shields.io/badge/Dev-20241214-blue)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev-20241214-blue)](https://github.com/Davidasx/flask-gpt/tree/f69aa30)
 
 Partially completed TODO 003 by adding logos on model select list.
 

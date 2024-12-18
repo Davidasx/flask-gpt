@@ -2,9 +2,6 @@
 const userAvatar = new Image();
 userAvatar.src = "static/images/user.svg";
 
-const botAvatar = new Image();
-botAvatar.src = "static/images/bot.jpg";
-
 let isBotResponding = false;
 
 function scrollToBottom() {
@@ -14,11 +11,23 @@ function scrollToBottom() {
 
 function saveMessages() {
     const chatMessages = [];
+    const storedModel = localStorage.getItem('model');
+    const modelName = storedModel === 'custom' ?
+        localStorage.getItem('custom-model') :
+        storedModel;
+
     document.querySelectorAll('.message').forEach(message => {
-        chatMessages.push({
-            role: message.classList.contains('user') ? 'user' : 'assistant',
-            content: message.getAttribute('data-content')
-        });
+        if (message.classList.contains('user')) {
+            chatMessages.push({
+                role: 'user',
+                content: message.getAttribute('data-content')
+            });
+        } else {
+            chatMessages.push({
+                role: `assistant-${modelName}`,
+                content: message.getAttribute('data-content')
+            });
+        }
     });
     localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
 }
@@ -30,7 +39,7 @@ function loadMessages() {
             if (msg.role === 'user') {
                 simulateUserMessage(msg.content);
             } else {
-                simulateBotMessage(msg.content);
+                simulateBotMessage(msg.content, msg.role);
             }
         });
 
@@ -46,11 +55,46 @@ function simulateUserMessage(content) {
     document.getElementById('chat-messages').appendChild(userMessage);
 }
 
-function simulateBotMessage(content) {
+function getModelAvatar(role) {
+    if (!role.startsWith('assistant-')) {
+        return 'static/images/openai.svg';
+    }
+    const modelName = role.substring(10).toLowerCase();
+
+    if (modelName.includes('gpt') || modelName.includes('o1')) {
+        return 'static/images/openai.svg';
+    } else if (modelName.includes('claude')) {
+        return 'static/images/anthropic.svg';
+    } else if (modelName.includes('gemini')) {
+        return 'static/images/gemini.svg';
+    } else if (modelName.includes('llama')) {
+        return 'static/images/meta.svg';
+    } else if (modelName.includes('grok')) {
+        return 'static/images/xai.svg';
+    } else if (modelName.includes('mistral') || modelName.includes('mixtral')) {
+        return 'static/images/mistral.svg';
+    } else if (modelName.includes('qwen')) {
+        return 'static/images/qwen.svg';
+    } else {
+        return 'static/images/robot.svg';
+    }
+}
+
+function simulateBotMessage(content, role=null) {
     const botMessage = document.createElement('div');
     botMessage.className = 'message bot';
     botMessage.setAttribute('data-content', content);
-    botMessage.innerHTML = `<img src="${botAvatar.src}" alt="ChatGPT Logo"><div class="bubble"></div>`;
+
+    if (!role) {
+        const storedModel = localStorage.getItem('model');
+        const modelName = storedModel === 'custom' ?
+            localStorage.getItem('custom-model') :
+            storedModel;
+        role = `assistant-${modelName}`;
+    }
+
+    const avatarSrc = getModelAvatar(role);
+    botMessage.innerHTML = `<img src="${avatarSrc}" alt="Bot Avatar"><div class="bubble"></div>`;
     document.getElementById('chat-messages').appendChild(botMessage);
 
     // First step: render the message content
@@ -68,9 +112,9 @@ function clearMemory(user_id, confirmClear = true) {
         return;
     }
 
-    uuid= getOrCreateUUID();
+    uuid = getOrCreateUUID();
     // Call the backend /clear_memory route
-    fetch('/clear_memory?user_id='+uuid, {
+    fetch('/clear_memory?user_id=' + uuid, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -129,7 +173,7 @@ function openSettings() {
     const uuid = getCookie('uuid');
     document.getElementById('base-url').value = baseURL || '';
     document.getElementById('api-key').value = apiKey || '';
-    document.getElementById('uuid').value = uuid|| '';
+    document.getElementById('uuid').value = uuid || '';
 }
 
 function closeSettings() {
@@ -269,26 +313,26 @@ document.getElementById('sync-button').addEventListener('click', () => {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // Update UUID cookie value
-                document.cookie = `uuid=${newUUID}; path=/; max-age=315360000`; // 10 year
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update UUID cookie value
+                    document.cookie = `uuid=${newUUID}; path=/; max-age=315360000`; // 10 year
 
-                // Clear messages on the screen
-                const chatMessages = document.getElementById('chat-messages');
-                chatMessages.innerHTML = '';
+                    // Clear messages on the screen
+                    const chatMessages = document.getElementById('chat-messages');
+                    chatMessages.innerHTML = '';
 
-                // Reload messages
-                syncMessages();
-            } else {
-                alert(translate('uuid-not-found'));
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert(translate('unknown-error'));
-        });
+                    // Reload messages
+                    syncMessages();
+                } else {
+                    alert(translate('uuid-not-found'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(translate('unknown-error'));
+            });
     } else {
         alert(translate('invalid-uuid'));
     }
