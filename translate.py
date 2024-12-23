@@ -3,7 +3,7 @@ import os
 import requests
 
 # Azure Translate API Configuration
-subscription_key = os.environ["AZURE_KEY"]
+subscription_key = os.environ["AZURE_TRANSLATE_API_KEY"]
 endpoint = 'https://api.cognitive.microsofttranslator.com/'
 location = 'global'
 

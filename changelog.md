@@ -1,13 +1,21 @@
 ## Current Version:
 
-[![](https://img.shields.io/badge/Dev-3.2.5.3-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+[![](https://img.shields.io/badge/Dev-3.2.5.5-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
 [![](https://img.shields.io/badge/Main-3.2.4.4-red)](https://github.com/Davidasx/flask-gpt/tree/main)
 
 ## Update Log (only after 3.1.0):
 
+### 3.2.5.5
+
+#### [![](https://img.shields.io/badge/Dev-20241223-blue)](https://github.com/Davidasx/flask-gpt)
+
+Emergency fix. Sorry for the inconvenience.
+
+The program will crash after the first message because the role of the bot has been modified to "assistant-[MODEL]" and the API will refuse such a request. Fixed now. Sorry.
+
 ### 3.2.5.4
 
-#### [![](https://img.shields.io/badge/Dev-20241218-blue)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev-20241218-blue)](https://github.com/Davidasx/flask-gpt/tree/b71fb46)
 
 Completed TODO 003.
 

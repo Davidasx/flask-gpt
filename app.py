@@ -67,7 +67,7 @@ class ChatBot:
         try:
             completion = self.client.chat.completions.create(
                 model=self.model,
-                messages=self.messages,
+                messages=processed_messages,
                 stream=self.stream
             )
         except:
