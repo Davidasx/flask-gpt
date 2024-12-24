@@ -1,13 +1,25 @@
 ## Current Version:
 
-[![](https://img.shields.io/badge/Dev-3.2.5.5-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+[![](https://img.shields.io/badge/Dev-3.3.1-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
 [![](https://img.shields.io/badge/Main-3.2.4.4-red)](https://github.com/Davidasx/flask-gpt/tree/main)
 
 ## Update Log (only after 3.1.0):
 
+### 3.3.1
+
+#### [![](https://img.shields.io/badge/Dev-20241225-blue)](https://github.com/Davidasx/flask-gpt)
+
+Merry Christmas!
+
+Fixed image display. Now the image adapts to 60% of the window width and 1024px(the original size) at max.
+
+Made the AI able to "remember" what it drew before by adding the drawing prompt it created itself to the message list.
+
+Used 16 image hosting instead of your database to store images.
+
 ### 3.3.0
 
-#### [![](https://img.shields.io/badge/Dev-20241224-blue)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev-20241224-blue)](https://github.com/Davidasx/flask-gpt/tree/cb19227)
 
 This is an revolutionary release.
 

@@ -28,6 +28,8 @@ Search: Free DuckDuckGo search API to search for information. You can set `DUCK_
 
 Draw: Free CloudFlare Workers AI FLUX-schnell model to generate images. You can set `CLOUDFLARE_API_KEY` and `CLOUDFLARE_USER_ID` environment variables to use the CloudFlare Workers AI.
 
+To save space, images will be stored on [16 image hosting](https://111666.best/). Define `ONESIX_API_KEY` environment variable to use an API key.(It's free and you can generate it on 16's website)
+
 All chat data is stored in an SQL database, with UUIDs stored in cookies.
 
 We will not use your data for any purpose other than to provide the service. The SQL database will never be viewed by anyone other than the program.
@@ -42,4 +44,4 @@ The log of the python program will hide all personal information. The only thing
 
 ## Demo site (low performance, Dev branch)
 
-[https://chat.davidx.us.kg/](https://chat.davidx.us.kg/)
+[https://chat.davidx.top/](https://chat.davidx.top/)

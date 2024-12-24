@@ -96,8 +96,11 @@ function simulateBotMessage(content, role=null) {
     const avatarSrc = getModelAvatar(role);
     botMessage.innerHTML = `<img src="${avatarSrc}" alt="Bot Avatar"><div class="bubble"></div>`;
     document.getElementById('chat-messages').appendChild(botMessage);
-    if (content.startsWith("<img src=\"data:image/png;base64,")) {
-        botMessage.querySelector('.bubble').innerHTML = content;
+    if (content.startsWith("<img src=\"")) {
+        cropped_content = content.split('$#%')[0];
+        adaptive_content = cropped_content.replace(/style="width: 512px; height: 512px;"/,
+            `style="width: ${Math.min(1024, window.innerWidth * 0.6)}px; height: ${Math.min(1024, window.innerWidth * 0.6)}px;"`);
+        botMessage.querySelector('.bubble').innerHTML = adaptive_content;
         scrollToBottom();
         return;
     }

@@ -9,6 +9,8 @@ from database import init_db, get_chat_log, save_chat_log, delete_chat_log, db, 
 import logging
 from logging_config import setup_logging
 import requests
+import base64
+from io import BytesIO
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
@@ -56,8 +58,9 @@ class ChatBot:
         processed_messages = []
         for msg in self.messages:
             processed_message = msg
-            if msg['content'].startswith('<img src="data:image/png;base64,'):
-                processed_message['content'] = 'Image generated successfully for you.'
+            if msg['content'].startswith('<img src="'):
+                image_prompt = msg['content'].split('$#%')[1] if '$#%' in msg['content'] else ''
+                processed_message['content'] = '$#%'+image_prompt
             if msg['role'].startswith('assistant-'):
                 processed_message['role'] = 'assistant'
             processed_messages.append(processed_message)
@@ -336,7 +339,57 @@ def draw():
     )
     if response.status_code != 200 or data['success'] == False:
         return jsonify({'status': 'error', 'message': 'Error generating image', 'notice': notice}), 400
-    return jsonify({'status': 'success','image': data['result']['image']}), 200
+    
+    image_base64 = data['result']['image']
+    image_data = BytesIO(base64.b64decode(image_base64))
+    image_data.name = 'image.png'
+    token = os.getenv('ONESIX_API_KEY')
+    proxy = os.getenv('ONESIX_PROXY')
+    files = {'image': image_data}
+    headers = {'Auth-Token': token}
+    
+    # Configure proxies if ONESIX_PROXY is set
+    proxies = {}
+    if proxy:
+        proxies = {
+            'http': proxy,
+            'https': proxy
+        }
+    
+    try:
+        upload_response = requests.post(
+            'https://i.111666.best/image',
+            files=files,
+            headers=headers,
+            proxies=proxies,
+            timeout=30  # Add timeout
+        )
+        upload_response.raise_for_status()  # Raise exception for bad status codes
+    except requests.exceptions.RequestException as e:
+        return jsonify({
+            'status': 'error',
+            'message': f'Failed to upload image: {str(e)}',
+            'notice': notice
+        }), 500
+    
+    try:
+        upload_response_json = upload_response.json()
+        if upload_response_json.get('ok') != True:
+            return jsonify({
+                'status': 'error', 
+                'message': f'Image server error: {upload_response_json.get("error", "Unknown error")}',
+                'notice': notice
+            }), 500
+        return jsonify({
+            'status': 'success',
+            'image': "https://i.111666.best" + upload_response_json['src']
+        }), 200
+    except (ValueError, KeyError) as e:
+        return jsonify({
+            'status': 'error',
+            'message': f'Invalid response from image server: {str(e)}',
+            'notice': notice
+        }), 500
 
 @app.after_request
 def log_request(response):

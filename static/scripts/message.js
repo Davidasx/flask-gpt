@@ -140,7 +140,6 @@ function sendMessage(message = null, showUserBubble = true, hidden = false, prev
                     ).then(data => {
                         if (data.status === 'error') {
                             failed_search = data.notice;
-                            console.log(failed_search);
                             sendMessage(failed_search, false, true, prompt); // Send again as user, hidden=true
                             return;
                         }
@@ -149,7 +148,6 @@ function sendMessage(message = null, showUserBubble = true, hidden = false, prev
                     }).catch(handleFetchError);
                 } else if (contentBuffer.startsWith('$#%')) {
                     const prompt = contentBuffer;
-                    console.log("Drawing...");
                     botMessage.querySelector('.bubble').innerHTML = "Drawing...";
 
                     fetch('/draw', {
@@ -180,15 +178,18 @@ function sendMessage(message = null, showUserBubble = true, hidden = false, prev
                         }
 
                         const image = data.image;
+                        maxWidth = Math.min(1024, window.innerWidth * 0.6);
+
+                        imageHTML = `<img src="${image}" alt="Generated Image" style="width: 512px; height: 512px;">`;
                         botMessage.querySelector('.bubble').innerHTML
-                            = `<img src="data:image/png;base64,${image}" alt="Generated Image" style="width: 512px; height: 512px;">`;
+                            = `<img src="${image}" alt="Generated Image" style="width: ${maxWidth}px; height: ${maxWidth}px;">`;
                         scrollToBottom();
                         fetch(`/bot_message?user_id=${uuid}&model=${model}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ message: botMessage.querySelector('.bubble').innerHTML })
+                            body: JSON.stringify({ message: imageHTML + prompt })
                         }).then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
