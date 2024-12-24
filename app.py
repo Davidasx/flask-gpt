@@ -8,6 +8,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from database import init_db, get_chat_log, save_chat_log, delete_chat_log, db, ChatLog
 import logging
 from logging_config import setup_logging
+import requests
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
@@ -15,19 +16,16 @@ init_db(app)
 
 access_logger = setup_logging()
 
-pre_prompt = []
-pre_prompt_searchless=[]
+prompt_list = []
 
 def load_prompt(file_path):
     if file_path[0] == '#':
         return
-    global pre_prompt
+    global prompt_list
     with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
         content = ''.join(line.strip() for line in lines)
-        pre_prompt.append({"role": "system", "content": content})
-        if file_path!="prompts/search.txt":
-            pre_prompt_searchless.append({"role": "system", "content": content})
+        prompt_list.append({"file_path": file_path, "message": {"role": "system", "content": content}})
 
 def load_all_prompts(directory):
     print("Loading prompts...")
@@ -57,13 +55,12 @@ class ChatBot:
     def reply(self):
         processed_messages = []
         for msg in self.messages:
+            processed_message = msg
+            if msg['content'].startswith('<img src="data:image/png;base64,'):
+                processed_message['content'] = 'Image generated successfully for you.'
             if msg['role'].startswith('assistant-'):
-                processed_messages.append({
-                    'role': 'assistant',
-                    'content': msg['content']
-                })
-            else:
-                processed_messages.append(msg)
+                processed_message['role'] = 'assistant'
+            processed_messages.append(processed_message)
         try:
             completion = self.client.chat.completions.create(
                 model=self.model,
@@ -85,6 +82,7 @@ def chat():
     base_url = request.args.get('base_url')
     hidden = request.args.get('hidden', 'false').lower() == 'true'
     search = request.args.get('search', 'true').lower() == 'true'
+    draw = request.args.get('draw', 'true').lower() == 'true'
     stream = request.args.get('stream', 'true').lower() == 'true'
     no_system = request.args.get('no_system', 'false').lower() == 'true'
     time_param = request.args.get('time')
@@ -92,6 +90,7 @@ def chat():
     if request.method == 'POST':
         data = request.get_json()
         message = data.get('message')
+        previous_message = data.get('previous')
         
         if not user_id:
             return jsonify({'status': 'error', 'message': 'Missing user_id'}), 400
@@ -104,7 +103,8 @@ def chat():
             chat_log_entry = ChatLog(user_id=user_id, chat_log=json.dumps([]))
         
         chat_log = json.loads(chat_log_entry.chat_log)
-        
+        if previous_message!="":
+            chat_log.append({'role': 'assistant-'+model, 'content': previous_message})
         chat_log.append({'role': 'user', 'content': message})
         
         save_chat_log(user_id, chat_log)
@@ -133,13 +133,18 @@ def chat():
             "datetime."}
         if no_system:
             full_log=chat_log
-        elif not search:
-            full_log = pre_prompt_searchless + [timeprompt] + chat_log
         else:
-            full_log = pre_prompt + [timeprompt] + chat_log
+            full_log = []
+            for system_prompt in prompt_list:
+                if system_prompt['file_path'] == 'prompts/search.txt' and search == False:
+                    continue
+                if system_prompt['file_path'] == 'prompts/draw.txt' and draw == False:
+                    continue
+                full_log.append(system_prompt['message'])
+            full_log = full_log + [timeprompt] + chat_log
         bot = ChatBot(stream=stream, api_key=api_key, base_url=base_url, model=model, messages=full_log)
         if hidden:
-            original_chat_log = chat_log[:-1]
+            original_chat_log = chat_log[:-2]
             save_chat_log(user_id, original_chat_log)
         completion = bot.reply()
         if completion is None:
@@ -248,9 +253,17 @@ def validate_uuid():
 
 @app.route('/search_chat', methods=['POST'])
 def search_chat():
+    notice = (
+        "This is a system message sent in the user's name. "
+        "You have attempted to search the internet "
+        "but the search has failed. Please notify the user. "
+        "Please do not reply to this message "
+        "but to the previous message by the user. Remember to "
+        "always reply in the user's language."
+    )
     data = request.get_json()
     
-    if not data or 'message' not in data or 'prompt' not in data:
+    if not data or 'prompt' not in data:
         return jsonify({'status': 'error', 'message': 'Missing Data'}), 400
     
     prompts = data.get('prompt')
@@ -264,7 +277,10 @@ def search_chat():
             duck = DDGS(proxy=os.environ["DUCK_PROXY"])
         else:
             duck = DDGS()
-        results = duck.text(prompt, max_results=10)
+        try:
+            results = duck.text(prompt, max_results=10)
+        except:
+            return jsonify({'status': 'error', 'message': 'Error searching the internet', 'notice': notice}), 500
         bodies = [result['body'] for result in results]
         titles = [result['title'] for result in results]
         concat = ''.join(f"{id} -- {title}:{body}\n\n" for id, title, body in zip(range(1, len(bodies)+1), titles, bodies))
@@ -286,6 +302,41 @@ def search_chat():
     )
     
     return jsonify({'status': 'success','answer': answer}), 200
+
+@app.route('/draw', methods=['POST'])
+def draw():
+    data = request.get_json()
+    
+    if not data or 'prompt' not in data:
+        return jsonify({'status': 'error', 'message': 'Missing Data'}), 400
+    
+    description = data.get('prompt')[3:]
+    api_key = os.getenv('CLOUDFLARE_API_KEY')
+    user_id = os.getenv("CLOUDFLARE_USER_ID")
+    url = f'https://api.cloudflare.com/client/v4/accounts/{user_id}/ai/run/@cf/black-forest-labs/flux-1-schnell'
+    headers = {
+        'Authorization': f'Bearer {api_key}'
+    }
+
+    data = {
+        'prompt': description
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+    data = response.json()
+    
+    notice = (
+        "This is a system message sent in the user's name. "
+        "You have requested an image generation "
+        "but it failed. Please notify the user. "
+        "Please do not reply to this message "
+        "but to the previous message by the user. Remember to "
+        "always reply in the user's language. Do not attempt to "
+        "try again unless the user asks for it."
+    )
+    if response.status_code != 200 or data['success'] == False:
+        return jsonify({'status': 'error', 'message': 'Error generating image', 'notice': notice}), 400
+    return jsonify({'status': 'success','image': data['result']['image']}), 200
 
 @app.after_request
 def log_request(response):

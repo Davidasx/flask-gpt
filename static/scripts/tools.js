@@ -4,6 +4,9 @@ function setStream(value) {
 function setSearch(value) {
     localStorage.setItem('search', value.toString());
 }
+function setDraw(value) {
+    localStorage.setItem('draw', value.toString());
+}
 
 function setNoSystem(value,auto) {
     localStorage.setItem('noSystem', value.toString());
@@ -19,6 +22,16 @@ function setNoSystem(value,auto) {
     } else {
         searchCheckbox.disabled = false;
         searchCheckbox.parentElement.style.opacity = '1';
+    }
+
+    const drawCheckbox = document.getElementById('draw-enabled');
+
+    if (value) {
+        drawCheckbox.disabled = true;
+        drawCheckbox.parentElement.style.opacity = '0.5';
+    } else {
+        drawCheckbox.disabled = false;
+        drawCheckbox.parentElement.style.opacity = '1';
     }
 }
 
@@ -47,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const savedSearch = localStorage.getItem('search') || 'false';
         searchCheck.checked = savedSearch === 'true';
         setSearch(searchCheck.checked);
+
+        const drawCheck = document.getElementById('draw-enabled');
+        const savedDraw = localStorage.getItem('draw') || 'false';
+        drawCheck.checked = savedDraw === 'true';
+        setSearch(drawCheck.checked);
 
         const noSystemCheck = document.getElementById('no-system');
         const savedNoSystem = localStorage.getItem('noSystem') || 'false';

@@ -96,6 +96,11 @@ function simulateBotMessage(content, role=null) {
     const avatarSrc = getModelAvatar(role);
     botMessage.innerHTML = `<img src="${avatarSrc}" alt="Bot Avatar"><div class="bubble"></div>`;
     document.getElementById('chat-messages').appendChild(botMessage);
+    if (content.startsWith("<img src=\"data:image/png;base64,")) {
+        botMessage.querySelector('.bubble').innerHTML = content;
+        scrollToBottom();
+        return;
+    }
 
     // First step: render the message content
     botMessage.querySelector('.bubble').innerHTML = formatMessage(content);

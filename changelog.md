@@ -5,9 +5,21 @@
 
 ## Update Log (only after 3.1.0):
 
+### 3.3.0
+
+#### [![](https://img.shields.io/badge/Dev-20241224-blue)](https://github.com/Davidasx/flask-gpt)
+
+This is an revolutionary release.
+
+Now has the ability to call CloudFlare AI's FLUX-schnell model to create images. The chatbot will aotumatically generate a image description and feed it to FLUX. The image will be generated in a few seconds and displayed in the message container.
+
+Please set environment variables `CLOUDFLARE_API_KEY` and `CLOUDFLARE_USER_ID` to use this feature. Learn more about CloudFlare AI's FLUX model usage [here](https://developers.cloudflare.com/workers-ai/models/flux-1-schnell/).
+
+Enjoy!
+
 ### 3.2.5.5
 
-#### [![](https://img.shields.io/badge/Dev-20241223-blue)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev-20241223-blue)](https://github.com/Davidasx/flask-gpt/tree/4e47dfe)
 
 Emergency fix. Sorry for the inconvenience.
 

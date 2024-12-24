@@ -1,4 +1,4 @@
-function sendMessage(message = null, showUserBubble = true, hidden = false) {
+function sendMessage(message = null, showUserBubble = true, hidden = false, previous = '') {
     if (!message) {
         message = document.getElementById('message').value;
     }
@@ -33,9 +33,15 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
     const storedModel = localStorage.getItem('model') || 'gpt-4o';
     const model = storedModel === 'custom' ? localStorage.getItem('custom-model') : storedModel;
     const tempStream = localStorage.getItem('stream') || 'true';
+
+    // Extra features
     const search = localStorage.getItem('search') || 'false';
+    const draw = localStorage.getItem('draw') || 'false';
+
+    // Lock features
     const noSystem = localStorage.getItem('noSystem') || 'false';
     const noStream = localStorage.getItem('noStream') || 'false';
+
     const stream = tempStream === 'true' && noStream === 'false';
     updatedChatLog.push({ role: 'user', content: message });
 
@@ -49,8 +55,8 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const userTime = `${year}${month}${day}${hours}${minutes}`;
-    
-    let url = `/chat?user_id=${uuid}&api_key=${apiKey}&base_url=${baseUrl}&time=${userTime}&model=${model}&stream=${stream}&search=${search}&no_system=${noSystem}`;
+
+    let url = `/chat?user_id=${uuid}&api_key=${apiKey}&base_url=${baseUrl}&time=${userTime}&model=${model}&stream=${stream}&search=${search}&draw=${draw}&no_system=${noSystem}`;
     if (hidden) {
         url += '&hidden=true';
     }
@@ -60,7 +66,7 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: message })
+        body: JSON.stringify({ message: message, previous: previous })
     }).then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -81,15 +87,19 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
                 document.getElementById('chat-messages').appendChild(botMessage);
             }
             contentBuffer += data.content;
-            botMessage.setAttribute('data-content', contentBuffer);
-            botMessage.querySelector('.bubble').innerHTML = formatMessage(contentBuffer);
+            filteredContentBuffer = contentBuffer;
+            if (contentBuffer.startsWith('@?!') || contentBuffer.startsWith('$#%')) {
+                filteredContentBuffer = "";
+            }
+            botMessage.setAttribute('data-content', filteredContentBuffer);
+            botMessage.querySelector('.bubble').innerHTML = formatMessage(filteredContentBuffer);
 
             // Scroll to bottom
             scrollToBottom();
 
             if (data.end) {
                 // Render message content
-                botMessage.querySelector('.bubble').innerHTML = formatMessage(contentBuffer);
+                botMessage.querySelector('.bubble').innerHTML = formatMessage(filteredContentBuffer);
 
                 // Render math formulas
                 MathJax.typesetPromise([botMessage.querySelector('.bubble')]).then(() => {
@@ -125,19 +135,70 @@ function sendMessage(message = null, showUserBubble = true, hidden = false) {
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ message: message, prompt: prompt })
-                    }).then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
+                        body: JSON.stringify({ prompt: prompt })
+                    }).then(response => response.json()
+                    ).then(data => {
+                        if (data.status === 'error') {
+                            failed_search = data.notice;
+                            console.log(failed_search);
+                            sendMessage(failed_search, false, true, prompt); // Send again as user, hidden=true
+                            return;
                         }
-                        return response.json();
-                    }).then(data => {
                         const answer = data.answer;
-                        sendMessage(answer, false, true); // Send again as user, hidden=true
+                        sendMessage(answer, false, true, prompt); // Send again as user, hidden=true
+                    }).catch(handleFetchError);
+                } else if (contentBuffer.startsWith('$#%')) {
+                    const prompt = contentBuffer;
+                    console.log("Drawing...");
+                    botMessage.querySelector('.bubble').innerHTML = "Drawing...";
+
+                    fetch('/draw', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ prompt: prompt })
+                    }).then(response => response.json()
+                    ).then(data => {
+                        if (data.status === 'error') {
+                            // Delete the last bot message
+                            const chatMessages = document.getElementById('chat-messages');
+                            const lastBotMessage = chatMessages.querySelector('.message.bot:last-child');
+                            if (lastBotMessage) {
+                                chatMessages.removeChild(lastBotMessage);
+                            }
+
+                            // Remove the last message from localStorage
+                            const chatLog = JSON.parse(localStorage.getItem('chatMessages')) || [];
+                            if (chatLog.length > 0) {
+                                chatLog.pop();
+                                localStorage.setItem('chatMessages', JSON.stringify(chatLog));
+                            }
+                            const failed_drawing = data.notice;
+                            sendMessage(failed_drawing, false, true, prompt); // Send again as user, hidden=true
+                            return;
+                        }
+
+                        const image = data.image;
+                        botMessage.querySelector('.bubble').innerHTML
+                            = `<img src="data:image/png;base64,${image}" alt="Generated Image" style="width: 512px; height: 512px;">`;
+                        scrollToBottom();
+                        fetch(`/bot_message?user_id=${uuid}&model=${model}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ message: botMessage.querySelector('.bubble').innerHTML })
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        }).then(data => {
+                        }).catch(handleFetchError);
                     }).catch(handleFetchError);
                 } else {
                     // Send message to /bot_message route
-                    console.log(model)
                     fetch(`/bot_message?user_id=${uuid}&model=${model}`, {
                         method: 'POST',
                         headers: {

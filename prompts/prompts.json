@@ -11,6 +11,12 @@
             "enabled": true,
             "file": "search.txt",
             "description": "Enable DuckDuckGo search for the bot."
+        },
+        {
+            "name": "Image Generation",
+            "enabled": true,
+            "file": "draw.txt",
+            "description": "Enable FLUX image generation."
         }
     ]
 }

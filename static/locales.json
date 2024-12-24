@@ -1,5 +1,5 @@
 {
-    "version": "3.2.5.4",
+    "version": "3.3",
     "translations": {
         "en": {
             "input": "Enter your message",
@@ -20,7 +20,8 @@
             "model-name": "Model Name",
             "stream": "Stream Output",
             "search": "Web Search",
-            "no-system": "Disable System Prompts"
+            "no-system": "Disable System Prompts",
+            "draw": "Draw"
         },
         "zh-cn": {
             "input": "输入你的消息",
@@ -41,7 +42,8 @@
             "model-name": "模型名称",
             "stream": "流输出",
             "search": "网络搜索",
-            "no-system": "禁用系统提示词"
+            "no-system": "禁用系统提示词",
+            "draw": "作图"
         },
         "zh-hk": {
             "input": "輸入你的消息",
@@ -62,7 +64,8 @@
             "model-name": "模型名稱",
             "stream": "流輸出",
             "search": "網絡搜索",
-            "no-system": "禁用系統提示詞"
+            "no-system": "禁用系統提示詞",
+            "draw": "作圖"
         },
         "fr": {
             "input": "Entrez votre message",
@@ -83,7 +86,8 @@
             "model-name": "Nom du modèle",
             "stream": "Sortie de flux",
             "search": "Recherche sur le Web",
-            "no-system": "Désactiver les invites système"
+            "no-system": "Désactiver les invites système",
+            "draw": "Dessiner"
         },
         "de": {
             "input": "Geben Sie Ihre Nachricht ein",
@@ -104,7 +108,8 @@
             "model-name": "Modellname",
             "stream": "Stream-Ausgabe",
             "search": "Websuche",
-            "no-system": "Deaktivieren von Systemaufforderungen"
+            "no-system": "Deaktivieren von Systemaufforderungen",
+            "draw": "Zeichnen"
         },
         "es": {
             "input": "Escribe tu mensaje",
@@ -125,7 +130,8 @@
             "model-name": "Nombre del modelo",
             "stream": "Salida de flujo",
             "search": "Búsqueda en la web",
-            "no-system": "Desactivar las indicaciones del sistema"
+            "no-system": "Desactivar las indicaciones del sistema",
+            "draw": "Dibujar"
         }
     }
 }

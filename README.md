@@ -12,6 +12,12 @@ Fill in your own API to use.
 
 See [installation.md](installation.md) for installation instructions.
 
+## Features
+
+- Chat with GPT and every model that supports OpenAI-style API.
+- Let the model search online for information with DuckDuckGo.
+- Generate images with FLUX.
+
 ## Implementation
 
 Frontend: HTML, CSS, and Javascript to receive user messages and send them to the backend.
@@ -19,6 +25,8 @@ Frontend: HTML, CSS, and Javascript to receive user messages and send them to th
 Backend: Python Flask to receive messages from the frontend and call the API.
 
 Search: Free DuckDuckGo search API to search for information. You can set `DUCK_PROXY` environment variable to use a proxy for DuckDuckGo.
+
+Draw: Free CloudFlare Workers AI FLUX-schnell model to generate images. You can set `CLOUDFLARE_API_KEY` and `CLOUDFLARE_USER_ID` environment variables to use the CloudFlare Workers AI.
 
 All chat data is stored in an SQL database, with UUIDs stored in cookies.
 
