@@ -10,6 +10,7 @@ import logging
 from logging_config import setup_logging
 import requests
 import base64
+import cloudscraper
 from io import BytesIO
 
 app = Flask(__name__)
@@ -344,24 +345,15 @@ def draw():
     image_data = BytesIO(base64.b64decode(image_base64))
     image_data.name = 'image.png'
     token = os.getenv('ONESIX_API_KEY')
-    proxy = os.getenv('ONESIX_PROXY')
     files = {'image': image_data}
     headers = {'Auth-Token': token}
     
-    # Configure proxies if ONESIX_PROXY is set
-    proxies = {}
-    if proxy:
-        proxies = {
-            'http': proxy,
-            'https': proxy
-        }
-    
     try:
-        upload_response = requests.post(
+        scraper = cloudscraper.create_scraper()
+        upload_response = scraper.post(
             'https://i.111666.best/image',
             files=files,
             headers=headers,
-            proxies=proxies,
             timeout=30  # Add timeout
         )
         upload_response.raise_for_status()  # Raise exception for bad status codes

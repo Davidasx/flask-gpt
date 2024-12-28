@@ -1,13 +1,19 @@
 ## Current Version:
 
-[![](https://img.shields.io/badge/Dev-3.3.1-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+[![](https://img.shields.io/badge/Dev-3.3.2-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
 [![](https://img.shields.io/badge/Main-3.2.4.4-red)](https://github.com/Davidasx/flask-gpt/tree/main)
 
 ## Update Log (only after 3.1.0):
 
+### 3.3.2
+
+#### [![](https://img.shields.io/badge/Dev-20241228-blue)](https://github.com/Davidasx/flask-gpt)
+
+Used `cloudscraper` to bypass 16 image hosting's CloudFlare shield.
+
 ### 3.3.1
 
-#### [![](https://img.shields.io/badge/Dev-20241225-blue)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev-20241225-blue)](https://github.com/Davidasx/flask-gpt/tree/b450562)
 
 Merry Christmas!
 

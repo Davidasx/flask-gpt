@@ -30,6 +30,8 @@ Draw: Free CloudFlare Workers AI FLUX-schnell model to generate images. You can 
 
 To save space, images will be stored on [16 image hosting](https://111666.best/). Define `ONESIX_API_KEY` environment variable to use an API key.(It's free and you can generate it on 16's website)
 
+As 16 image hosting has an annoying CloudFlare shield which displays a captcha for almost all IDC IPs, CloudScraper is used to bypass it.
+
 All chat data is stored in an SQL database, with UUIDs stored in cookies.
 
 We will not use your data for any purpose other than to provide the service. The SQL database will never be viewed by anyone other than the program.

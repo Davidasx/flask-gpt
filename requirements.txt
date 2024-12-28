@@ -3,3 +3,4 @@ flask
 flask_sqlalchemy
 duckduckgo-search
 requests
+cloudscraper
