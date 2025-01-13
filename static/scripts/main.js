@@ -61,8 +61,10 @@ function getModelAvatar(role) {
     }
     const modelName = role.substring(10).toLowerCase();
 
-    if (modelName.includes('gpt') || modelName.includes('o1')) {
+    if (modelName.includes('gpt')) {
         return 'static/images/openai.svg';
+    } else if (modelName.includes('o1')) {
+        return 'static/images/orion.svg';
     } else if (modelName.includes('claude')) {
         return 'static/images/anthropic.svg';
     } else if (modelName.includes('gemini')) {

@@ -47,6 +47,10 @@
     background-image: url('../images/openai.svg');
 }
 
+.icon-orion {
+    background-image: url('../images/orion.svg');
+}
+
 .icon-anthropic {
     background-image: url('../images/anthropic.svg');
 }

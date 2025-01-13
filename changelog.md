@@ -5,9 +5,15 @@
 
 ## Update Log (only after 3.1.0):
 
+### 3.3.3
+
+#### [![](https://img.shields.io/badge/Dev-20250113-blue)](https://github.com/Davidasx/flask-gpt)
+
+Added separate image for OpenAI o1 model.
+
 ### 3.3.2
 
-#### [![](https://img.shields.io/badge/Dev-20241228-blue)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev-20241228-blue)](https://github.com/Davidasx/flask-gpt/tree/6436d74)
 
 Used `cloudscraper` to bypass 16 image hosting's CloudFlare shield.
 

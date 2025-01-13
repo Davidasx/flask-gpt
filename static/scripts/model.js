@@ -15,8 +15,11 @@ function updateIcon() {
     const modelName = storedModel === 'custom' ? localStorage.getItem('custom-model') : storedModel;
     const iconSpan = document.getElementById('model-icon');
 
-    if (modelName.includes('gpt') || modelName.includes('o1')) {
+    if (modelName.includes('gpt')) {
         iconSpan.className = 'model-icon icon-openai';
+    }
+    else if (modelName.includes('o1')) {
+        iconSpan.className = 'model-icon icon-orion';
     }
     else if (modelName.includes('claude')) {
         iconSpan.className = 'model-icon icon-anthropic';
