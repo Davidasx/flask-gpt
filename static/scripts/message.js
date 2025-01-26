@@ -69,6 +69,7 @@ function sendMessage(message = null, showUserBubble = true, hidden = false, prev
         body: JSON.stringify({ message: message, previous: previous })
     }).then(response => {
         if (!response.ok) {
+            handleFetchError(response.statusText);
             throw new Error('Network response was not ok');
         }
         const eventSource = new EventSource(url);
@@ -229,11 +230,18 @@ function sendMessage(message = null, showUserBubble = true, hidden = false, prev
         isBotResponding = false;
         checkMessage(); // Recheck message input box
 
+        userMessage = document.querySelector('.message.user:last-child');
         // Delete user message and fill message content into input box
         if (userMessage) {
             document.getElementById('chat-messages').removeChild(userMessage);
-            document.getElementById('message').value = message;
+            document.getElementById('message').value = userMessage.getAttribute('data-content');
             document.getElementById('send-button').disabled = false;
+
+            alertMessage = document.createElement('div');
+            alertMessage.className = 'message alert';
+            alertMessage.innerHTML = `<div class="bubble" data-i18n="error-message">`+translate('error-message')+`</div>`;
+            document.getElementById('chat-messages').appendChild(alertMessage);
+            scrollToBottom();
 
             fetch(`/delete_message?user_id=${uuid}`, {
                 method: 'POST',

@@ -1,5 +1,5 @@
 {
-    "version": "3.3",
+    "version": "3.3.4",
     "translations": {
         "en": {
             "input": "Enter your message",
@@ -21,7 +21,8 @@
             "stream": "Stream Output",
             "search": "Web Search",
             "no-system": "Disable System Prompts",
-            "draw": "Draw"
+            "draw": "Draw",
+            "error-message": "An error occurred while sending your message. Please try again."
         },
         "zh-cn": {
             "input": "输入你的消息",
@@ -43,7 +44,8 @@
             "stream": "流输出",
             "search": "网络搜索",
             "no-system": "禁用系统提示词",
-            "draw": "作图"
+            "draw": "作图",
+            "error-message": "发送消息时发生错误。 请重试。"
         },
         "zh-hk": {
             "input": "輸入你的消息",
@@ -65,7 +67,8 @@
             "stream": "流輸出",
             "search": "網絡搜索",
             "no-system": "禁用系統提示詞",
-            "draw": "作圖"
+            "draw": "作圖",
+            "error-message": "發送消息時發生錯誤。 請重試。"
         },
         "fr": {
             "input": "Entrez votre message",
@@ -87,7 +90,8 @@
             "stream": "Sortie de flux",
             "search": "Recherche sur le Web",
             "no-system": "Désactiver les invites système",
-            "draw": "Dessiner"
+            "draw": "Dessiner",
+            "error-message": "Une erreur s’est produite lors de l’envoi de votre message. Veuillez réessayer."
         },
         "de": {
             "input": "Geben Sie Ihre Nachricht ein",
@@ -109,7 +113,8 @@
             "stream": "Stream-Ausgabe",
             "search": "Websuche",
             "no-system": "Deaktivieren von Systemaufforderungen",
-            "draw": "Zeichnen"
+            "draw": "Zeichnen",
+            "error-message": "Beim Senden der Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
         },
         "es": {
             "input": "Escribe tu mensaje",
@@ -131,7 +136,8 @@
             "stream": "Salida de flujo",
             "search": "Búsqueda en la web",
             "no-system": "Desactivar las indicaciones del sistema",
-            "draw": "Dibujar"
+            "draw": "Dibujar",
+            "error-message": "Se ha producido un error al enviar el mensaje. Por favor, inténtelo de nuevo."
         }
     }
 }

@@ -77,6 +77,11 @@
     justify-content: flex-start;
 }
 
+.message.alert {
+    justify-content: center;
+    color: #ff0000;
+}
+
 .message img {
     width: 30px;
     height: 30px;

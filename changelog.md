@@ -5,9 +5,21 @@
 
 ## Update Log (only after 3.1.0):
 
+### 3.3.4
+
+#### [![](https://img.shields.io/badge/Dev-20250126-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+
+Improved my rubbish error-handling code. Added a warning box.
+
+Now there shall be no more "No Response and No Notice" situations, or at least there will be much fewer of them.
+
+Sorry for the inconvenience.
+
+I will consider merging to main branch soon.
+
 ### 3.3.3
 
-#### [![](https://img.shields.io/badge/Dev-20250113-blue)](https://github.com/Davidasx/flask-gpt)
+#### [![](https://img.shields.io/badge/Dev-20250113-blue)](https://github.com/Davidasx/flask-gpt/tree/24ab1b8)
 
 Added separate image for OpenAI o1 model.
 
