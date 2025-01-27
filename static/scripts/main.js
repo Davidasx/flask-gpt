@@ -61,7 +61,9 @@ function getModelAvatar(role) {
     }
     const modelName = role.substring(10).toLowerCase();
 
-    if (modelName.includes('gpt')) {
+    if (modelName.includes('deepseek')) {
+        return 'static/images/deepseek.svg';
+    } else if (modelName.includes('gpt')) {
         return 'static/images/openai.svg';
     } else if (modelName.includes('o1')) {
         return 'static/images/orion.svg';

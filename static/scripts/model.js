@@ -15,7 +15,10 @@ function updateIcon() {
     const modelName = storedModel === 'custom' ? localStorage.getItem('custom-model') : storedModel;
     const iconSpan = document.getElementById('model-icon');
 
-    if (modelName.includes('gpt')) {
+    if (modelName.includes('deepseek')) {
+        iconSpan.className = 'model-icon icon-deepseek';
+    }
+    else if (modelName.includes('gpt')) {
         iconSpan.className = 'model-icon icon-openai';
     }
     else if (modelName.includes('o1')) {
@@ -60,12 +63,12 @@ function handleModelChange(value) {
     if (autoNoSystem) {
         noSystemCheckbox.checked = true;
         noSystemCheckbox.disabled = true;
-        setNoSystem(true,true);
+        setNoSystem(true, true);
     }
     else {
         noSystemCheckbox.checked = localStorage.getItem('previousNoSystemState') === 'true';
         noSystemCheckbox.disabled = false;
-        setNoSystem(localStorage.getItem('previousNoSystemState') === 'true',true);
+        setNoSystem(localStorage.getItem('previousNoSystemState') === 'true', true);
     }
 
     if (autoNoStream) {

@@ -1,13 +1,21 @@
 ## Current Version:
 
-[![](https://img.shields.io/badge/Dev-3.3.2-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
-[![](https://img.shields.io/badge/Main-3.2.4.4-red)](https://github.com/Davidasx/flask-gpt/tree/main)
+[![](https://img.shields.io/badge/Dev-3.3.5-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+[![](https://img.shields.io/badge/Main-3.3.5-red)](https://github.com/Davidasx/flask-gpt/tree/main)
 
 ## Update Log (only after 3.1.0):
 
+### 3.3.5
+
+#### [![](https://img.shields.io/badge/Dev/Main-20250127-purple)](https://github.com/Davidasx/flask-gpt/tree/dev)
+
+Added icon support for DeepSeek.
+
+Merge into main branch.
+
 ### 3.3.4
 
-#### [![](https://img.shields.io/badge/Dev-20250126-blue)](https://github.com/Davidasx/flask-gpt/tree/dev)
+#### [![](https://img.shields.io/badge/Dev-20250126-blue)](https://github.com/Davidasx/flask-gpt/tree/95e247e)
 
 Improved my rubbish error-handling code. Added a warning box.
 

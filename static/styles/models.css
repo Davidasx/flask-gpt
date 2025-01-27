@@ -43,6 +43,10 @@
     flex: 1;
 }
 
+.icon-deepseek {
+    background-image: url('../images/deepseek.svg');
+}
+
 .icon-openai {
     background-image: url('../images/openai.svg');
 }
